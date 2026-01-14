@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_infinite_biomesoplenty_goldenrod": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "boundless_blocks:infinite_biomesoplenty_goldenrod"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "boundless_blocks:infinite_biomesoplenty_goldenrod_unpack"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_infinite_biomesoplenty_goldenrod",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "boundless_blocks:infinite_biomesoplenty_goldenrod_unpack"
+    ]
+  },
+  "sends_telemetry_event": false
+}

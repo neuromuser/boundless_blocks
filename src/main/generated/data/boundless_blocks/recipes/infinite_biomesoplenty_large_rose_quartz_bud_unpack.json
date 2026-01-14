@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_biomesoplenty_large_rose_quartz_bud"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "biomesoplenty:large_rose_quartz_bud"
+  }
+}

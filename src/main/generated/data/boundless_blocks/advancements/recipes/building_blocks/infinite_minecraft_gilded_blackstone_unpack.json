@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_infinite_minecraft_gilded_blackstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "boundless_blocks:infinite_minecraft_gilded_blackstone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "boundless_blocks:infinite_minecraft_gilded_blackstone_unpack"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_infinite_minecraft_gilded_blackstone",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "boundless_blocks:infinite_minecraft_gilded_blackstone_unpack"
+    ]
+  },
+  "sends_telemetry_event": false
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_biomesoplenty_redwood_wood"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "biomesoplenty:redwood_wood"
+  }
+}

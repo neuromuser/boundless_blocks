@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_biomesoplenty_fir_door"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "biomesoplenty:fir_door"
+  }
+}

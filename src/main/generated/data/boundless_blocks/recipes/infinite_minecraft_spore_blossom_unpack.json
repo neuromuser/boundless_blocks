@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_minecraft_spore_blossom"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:spore_blossom"
+  }
+}

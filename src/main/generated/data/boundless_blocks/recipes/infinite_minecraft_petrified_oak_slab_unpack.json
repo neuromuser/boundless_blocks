@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_minecraft_petrified_oak_slab"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:petrified_oak_slab"
+  }
+}

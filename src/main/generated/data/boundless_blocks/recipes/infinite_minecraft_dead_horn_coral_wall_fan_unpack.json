@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_minecraft_dead_horn_coral_wall_fan"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:dead_horn_coral_fan"
+  }
+}

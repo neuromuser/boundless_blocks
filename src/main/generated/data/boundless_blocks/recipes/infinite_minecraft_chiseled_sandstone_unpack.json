@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_minecraft_chiseled_sandstone"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:chiseled_sandstone"
+  }
+}

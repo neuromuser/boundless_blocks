@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_biomesoplenty_willow_slab"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "biomesoplenty:willow_slab"
+  }
+}

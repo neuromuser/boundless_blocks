@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_minecraft_stripped_cherry_wood"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:stripped_cherry_wood"
+  }
+}
