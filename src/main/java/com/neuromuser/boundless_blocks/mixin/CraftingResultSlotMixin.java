@@ -19,12 +19,10 @@ public class CraftingResultSlotMixin {
 
     @Inject(method = "onTakeItem", at = @At("HEAD"))
     private void checkInfiniteCraft(PlayerEntity player, ItemStack stack, CallbackInfo ci) {
-        // In 1.20.1, getFirstMatch returns the Recipe directly inside the Optional
-        player.getWorld().getRecipeManager().getFirstMatch(net.minecraft.recipe.RecipeType.CRAFTING, input, player.getWorld())
+        player.getWorld().getRecipeManager()
+                .getFirstMatch(net.minecraft.recipe.RecipeType.CRAFTING, input, player.getWorld())
                 .ifPresent(recipe -> {
-                    // No .value() needed here in 1.20.1
                     if (recipe instanceof InfiniteCraftingRecipe) {
-                        // Clear the grid to consume all 64 items in every slot
                         input.clear();
                     }
                 });

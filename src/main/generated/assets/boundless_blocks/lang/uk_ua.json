@@ -1,10 +1,15 @@
 {
   "category.boundless_blocks.general": "Загальні налаштування",
   "item.boundless_blocks.infinite_format": "∞ %s ∞",
+  "option.boundless_blocks.blacklist": "Заблоковані ключові слова",
   "option.boundless_blocks.keywords": "Дозволені ключові слова",
   "option.boundless_blocks.stacks": "Кількість стаків для крафту",
   "title.boundless_blocks.config": "Налаштування Boundless Blocks",
+  "tooltip.boundless_blocks.blacklist": "Блоки з цими словами ЗАБОРОНЕНІ (пріоритет)",
   "tooltip.boundless_blocks.can_be_infinite": "§aМожна зробити безкінечним!",
   "tooltip.boundless_blocks.infinite_item.line1": "§bБезкінечний - ніколи не закінчується!",
-  "tooltip.boundless_blocks.infinite_item.line2": "§bМожна розміщувати і дублювати цей тип блоку без витрат!"
+  "tooltip.boundless_blocks.infinite_item.line2": "§bМожна розміщувати і дублювати цей тип блоку без витрат!",
+  "tooltip.boundless_blocks.keywords": "Блоки з цими словами можна крафтити",
+  "tooltip.boundless_blocks.stack_size": "Предметів у стаку (1-64)",
+  "tooltip.boundless_blocks.stacks": "Скільки стаків потрібно для крафту (2-9)"
 }

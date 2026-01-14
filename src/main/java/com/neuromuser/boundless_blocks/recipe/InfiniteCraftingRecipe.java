@@ -2,7 +2,7 @@ package com.neuromuser.boundless_blocks.recipe;
 
 import com.neuromuser.boundless_blocks.BoundlessBlocks;
 import com.neuromuser.boundless_blocks.config.BoundlessConfig;
-import com.neuromuser.boundless_blocks.item.InfiniteItem;
+import com.neuromuser.boundless_blocks.item.InfiniteBlockItem;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -10,10 +10,12 @@ import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import net.minecraft.block.Block;
-import net.minecraft.registry.Registries;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class InfiniteCraftingRecipe extends SpecialCraftingRecipe {
 
@@ -23,65 +25,66 @@ public class InfiniteCraftingRecipe extends SpecialCraftingRecipe {
 
     @Override
     public boolean matches(RecipeInputInventory inventory, World world) {
-        // Ensure items are actually registered before checking
-        InfiniteItem.ensureInitialized();
-
-        int requiredStacks = BoundlessConfig.craftStacksCount;
-        int requiredCount = BoundlessConfig.itemsPerStack;
+        int requiredStacks = BoundlessConfig.getCraftStacksCount();
+        int requiredCount = BoundlessConfig.getItemsPerStack();
 
         ItemStack firstStack = ItemStack.EMPTY;
-        int filledSlots = 0;
+        Set<Integer> usedSlots = new HashSet<>();
+        int validStacks = 0;
 
-        // Single pass through inventory to collect data
         for (int i = 0; i < inventory.size(); i++) {
             ItemStack stack = inventory.getStack(i);
             if (stack.isEmpty()) continue;
 
-            filledSlots++;
+            if (isValidStack(stack)) {
+                usedSlots.add(i);
+                validStacks++;
 
-            if (firstStack.isEmpty()) {
-                firstStack = stack;
-
-                // Fail early: must be a BlockItem
-                if (!(stack.getItem() instanceof BlockItem)) return false;
-
-                // Fail early: must meet count requirement
-                if (stack.getCount() < requiredCount) return false;
-
-                // Keyword check
-                Identifier blockId = Registries.ITEM.getId(stack.getItem());
-                String path = blockId.getPath();
-                boolean matchesKeyword = BoundlessConfig.allowedKeywords.stream()
-                        .anyMatch(path::contains);
-
-                if (!matchesKeyword) return false;
-            } else {
-                // Check if this slot matches the first slot
-                if (!ItemStack.areItemsEqual(stack, firstStack) || stack.getCount() < requiredCount) {
-                    return false;
+                if (firstStack.isEmpty()) {
+                    firstStack = stack;
+                } else {
+                    if (!ItemStack.areItemsEqual(stack, firstStack)) {
+                        return false;
+                    }
                 }
             }
         }
 
-        // Final check: slot count must match config
-        if (filledSlots != requiredStacks) return false;
+        if (validStacks != requiredStacks) {
+            return false;
+        }
 
-        // Check if an infinite version actually exists in our registry map
-        Block block = ((BlockItem) firstStack.getItem()).getBlock();
-        return InfiniteItem.INFINITE_ITEMS.containsKey(block);
+        for (int slot : usedSlots) {
+            if (inventory.getStack(slot).getCount() < requiredCount) {
+                return false;
+            }
+        }
+
+        return !firstStack.isEmpty() && firstStack.getItem() instanceof BlockItem;
+    }
+
+    private boolean isValidStack(ItemStack stack) {
+        if (!(stack.getItem() instanceof BlockItem)) return false;
+
+        net.minecraft.block.Block block = ((BlockItem) stack.getItem()).getBlock();
+        Identifier blockId = Registries.BLOCK.getId(block);
+
+        // Apply crafting filters from config
+        return BoundlessConfig.isBlockAllowedForCrafting(blockId);
     }
 
     @Override
     public ItemStack craft(RecipeInputInventory inventory, DynamicRegistryManager registryManager) {
-        // Find the first non-empty stack (we already validated they are all the same in matches())
+        // Find the block being crafted
         for (int i = 0; i < inventory.size(); i++) {
             ItemStack stack = inventory.getStack(i);
-            if (!stack.isEmpty() && stack.getItem() instanceof BlockItem) {
-                Block block = ((BlockItem) stack.getItem()).getBlock();
-                InfiniteItem infiniteItem = InfiniteItem.INFINITE_ITEMS.get(block);
-                if (infiniteItem != null) {
-                    return new ItemStack(infiniteItem, 1);
-                }
+            if (!stack.isEmpty() && stack.getItem() instanceof BlockItem blockItem) {
+                net.minecraft.block.Block block = blockItem.getBlock();
+                Identifier blockId = Registries.BLOCK.getId(block);
+
+                // Create infinite item with NBT storing the block
+                BoundlessBlocks.LOGGER.info("Creating infinite block for: {}", blockId);
+                return InfiniteBlockItem.createInfiniteStack(block);
             }
         }
         return ItemStack.EMPTY;
@@ -89,9 +92,7 @@ public class InfiniteCraftingRecipe extends SpecialCraftingRecipe {
 
     @Override
     public boolean fits(int width, int height) {
-        // A 3x3 grid (9 slots) is the max standard,
-        // ensure the config doesn't exceed the UI capabilities
-        return (width * height) >= BoundlessConfig.craftStacksCount;
+        return (width * height) >= BoundlessConfig.getCraftStacksCount();
     }
 
     @Override

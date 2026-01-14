@@ -48,7 +48,24 @@ public class ModMenuCompat implements ModMenuApi {
                             "quartz", "nether", "end", "blackstone", "deepslate", "copper", "iron",
                             "gold", "diamond", "emerald", "lapis", "redstone", "coal", "amethyst"
                     ))
+                    .setTooltip(Text.translatable("tooltip.boundless_blocks.keywords"))
                     .setSaveConsumer(newValue -> BoundlessConfig.allowedKeywords = newValue)
+                    .build());
+
+            // 4. Blacklisted Keywords List
+            general.addEntry(entryBuilder.startStrList(
+                            Text.translatable("option.boundless_blocks.blacklist"),
+                            BoundlessConfig.blacklistedKeywords
+                    )
+                    .setDefaultValue(Arrays.asList(
+                            "air", "water", "lava", "fire", "soul_fire",
+                            "spawner", "portal", "end_portal", "end_gateway",
+                            "flowing", "bubble_column",
+                            "potted_", "wall_",
+                            "command_block", "structure_block", "jigsaw", "barrier", "light", "waystone"
+                    ))
+                    .setTooltip(Text.translatable("tooltip.boundless_blocks.blacklist"))
+                    .setSaveConsumer(newValue -> BoundlessConfig.blacklistedKeywords = newValue)
                     .build());
 
             builder.setSavingRunnable(BoundlessConfig::save);
