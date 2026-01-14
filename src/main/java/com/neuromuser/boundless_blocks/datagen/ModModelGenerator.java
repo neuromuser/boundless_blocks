@@ -6,25 +6,27 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.ModelIds;
-import net.minecraft.data.client.Models;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
 
 public class ModModelGenerator extends FabricModelProvider {
     public ModModelGenerator(FabricDataOutput output) {
         super(output);
-        InfiniteItem.initializeInfiniteItems();
+        // REMOVED: InfiniteItem.initializeInfiniteItems();
+        // Now initialized in BoundlessBlocksDataGenerator before providers are created
     }
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
+        System.out.println("=== Model Generation ===");
+        System.out.println("Generating models for " + InfiniteItem.INFINITE_ITEMS.size() + " infinite items");
 
         InfiniteItem.INFINITE_ITEMS.forEach((block, item) -> {
-            // Use getItemModelId instead of getBlockModelId
-            // This ensures it copies the "Display" settings (hand rotation)
-            // from the vanilla item version.
-            blockStateModelGenerator.registerParentedItemModel(item, ModelIds.getItemModelId(block.asItem()));
+            blockStateModelGenerator.registerParentedItemModel(
+                    item,
+                    ModelIds.getItemModelId(block.asItem())
+            );
         });
+
+        System.out.println("Model generation complete");
     }
 
     @Override

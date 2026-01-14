@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_minecraft_pink_shulker_box"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:pink_shulker_box"
+  }
+}

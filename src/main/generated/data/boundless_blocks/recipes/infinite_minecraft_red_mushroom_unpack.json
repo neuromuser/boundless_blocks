@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_minecraft_red_mushroom"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:red_mushroom"
+  }
+}

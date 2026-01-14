@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_biomesoplenty_high_grass_plant"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "biomesoplenty:high_grass_plant"
+  }
+}

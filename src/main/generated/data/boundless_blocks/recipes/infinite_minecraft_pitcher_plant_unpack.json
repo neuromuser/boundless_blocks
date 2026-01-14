@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_minecraft_pitcher_plant"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:pitcher_plant"
+  }
+}

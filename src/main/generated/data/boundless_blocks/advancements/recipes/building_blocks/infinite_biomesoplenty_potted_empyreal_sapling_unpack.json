@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_infinite_biomesoplenty_potted_empyreal_sapling": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "boundless_blocks:infinite_biomesoplenty_potted_empyreal_sapling"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "boundless_blocks:infinite_biomesoplenty_potted_empyreal_sapling_unpack"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_infinite_biomesoplenty_potted_empyreal_sapling",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "boundless_blocks:infinite_biomesoplenty_potted_empyreal_sapling_unpack"
+    ]
+  },
+  "sends_telemetry_event": false
+}

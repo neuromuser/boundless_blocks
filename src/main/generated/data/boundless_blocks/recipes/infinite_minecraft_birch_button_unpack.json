@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_minecraft_birch_button"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:birch_button"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_infinite_minecraft_dead_tube_coral_fan": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "boundless_blocks:infinite_minecraft_dead_tube_coral_fan"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "boundless_blocks:infinite_minecraft_dead_tube_coral_fan_unpack"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_infinite_minecraft_dead_tube_coral_fan",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "boundless_blocks:infinite_minecraft_dead_tube_coral_fan_unpack"
+    ]
+  },
+  "sends_telemetry_event": false
+}

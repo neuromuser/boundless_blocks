@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_biomesoplenty_hellbark_stairs"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "biomesoplenty:hellbark_stairs"
+  }
+}

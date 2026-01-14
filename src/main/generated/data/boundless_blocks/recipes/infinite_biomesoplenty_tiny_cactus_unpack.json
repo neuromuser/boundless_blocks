@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_biomesoplenty_tiny_cactus"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "biomesoplenty:tiny_cactus"
+  }
+}

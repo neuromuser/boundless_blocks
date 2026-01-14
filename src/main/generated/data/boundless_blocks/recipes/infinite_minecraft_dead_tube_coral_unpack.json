@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_minecraft_dead_tube_coral"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:dead_tube_coral"
+  }
+}

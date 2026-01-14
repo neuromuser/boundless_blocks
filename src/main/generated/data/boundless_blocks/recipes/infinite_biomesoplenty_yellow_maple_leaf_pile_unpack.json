@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_biomesoplenty_yellow_maple_leaf_pile"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "biomesoplenty:yellow_maple_leaf_pile"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_infinite_minecraft_structure_void": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "boundless_blocks:infinite_minecraft_structure_void"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "boundless_blocks:infinite_minecraft_structure_void_unpack"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_infinite_minecraft_structure_void",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "boundless_blocks:infinite_minecraft_structure_void_unpack"
+    ]
+  },
+  "sends_telemetry_event": false
+}

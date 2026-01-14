@@ -27,10 +27,30 @@ public class InfiniteItem extends BlockItem {
         return INITIALIZED.get();
     }
 
+    /**
+     * Initialize infinite items from all registered blocks.
+     * Safe to call multiple times - will only initialize once.
+     */
     public static void initializeInfiniteItems() {
-        if (INITIALIZED.getAndSet(true)) {
+        initializeInfiniteItems(false);
+    }
+
+    /**
+     * Initialize infinite items from all registered blocks.
+     * @param force If true, will re-scan all blocks even if already initialized
+     */
+    public static void initializeInfiniteItems(boolean force) {
+        if (!force && INITIALIZED.getAndSet(true)) {
+            BoundlessBlocks.LOGGER.debug("Infinite items already initialized, skipping");
             return;
         }
+
+        if (force) {
+            INITIALIZED.set(true);
+            BoundlessBlocks.LOGGER.info("Force re-initializing infinite items");
+        }
+
+        int beforeCount = INFINITE_ITEMS.size();
 
         for (Block block : Registries.BLOCK) {
             Identifier id = Registries.BLOCK.getId(block);
@@ -41,59 +61,14 @@ public class InfiniteItem extends BlockItem {
             Item vanillaItem = block.asItem();
             if (vanillaItem == Items.AIR) continue;
 
+            // Register blocks from minecraft and biomesoplenty
             if (id.getNamespace().equals("minecraft") || id.getNamespace().equals("biomesoplenty")) {
                 registerInfiniteBlock(block);
             }
         }
-    }
 
-    private static boolean isBuildingBlock(Identifier id) {
-        String path = id.getPath();
-        String namespace = id.getNamespace();
-
-        // Common building block patterns
-        return path.contains("planks") ||
-                path.contains("log") ||
-                path.contains("wood") ||
-                path.contains("stripped") ||
-                path.contains("bricks") ||
-                path.contains("stone") ||
-                path.contains("ore") ||
-                path.contains("block") ||
-                path.contains("slab") ||
-                path.contains("stairs") ||
-                path.contains("fence") ||
-                path.contains("wall") ||
-                path.contains("glass") ||
-                path.contains("door") ||
-                path.contains("trapdoor") ||
-                path.contains("tile") ||
-                path.contains("cobblestone") ||
-                path.contains("mossy") ||
-                path.contains("smooth") ||
-                path.contains("polished") ||
-                path.contains("chiseled") ||
-                path.contains("cut") ||
-                path.contains("concrete") ||
-                path.contains("terracotta") ||
-                path.contains("wool") ||
-                path.contains("sandstone") ||
-                path.contains("prismarine") ||
-                path.contains("purpur") ||
-                path.contains("quartz") ||
-                path.contains("nether") ||
-                path.contains("end") ||
-                path.contains("blackstone") ||
-                path.contains("deepslate") ||
-                path.contains("copper") ||
-                path.contains("iron") ||
-                path.contains("gold") ||
-                path.contains("diamond") ||
-                path.contains("emerald") ||
-                path.contains("lapis") ||
-                path.contains("redstone") ||
-                path.contains("coal") ||
-                path.contains("amethyst");
+        int newCount = INFINITE_ITEMS.size() - beforeCount;
+        BoundlessBlocks.LOGGER.info("Initialized {} infinite items (total: {})", newCount, INFINITE_ITEMS.size());
     }
 
     @Override
@@ -138,7 +113,6 @@ public class InfiniteItem extends BlockItem {
 
             // Skip if already registered
             if (Registries.ITEM.containsId(itemId)) {
-                // Get existing item
                 Item existing = Registries.ITEM.get(itemId);
                 if (existing instanceof InfiniteItem) {
                     INFINITE_ITEMS.put(block, (InfiniteItem) existing);

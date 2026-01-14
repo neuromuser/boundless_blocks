@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_minecraft_bamboo_stairs"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:bamboo_stairs"
+  }
+}

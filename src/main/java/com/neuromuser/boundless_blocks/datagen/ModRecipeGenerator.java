@@ -14,15 +14,16 @@ import java.util.function.Consumer;
 
 public class ModRecipeGenerator extends FabricRecipeProvider {
     public ModRecipeGenerator(FabricDataOutput output) {
-
         super(output);
-        InfiniteItem.initializeInfiniteItems();
+        // REMOVED: InfiniteItem.initializeInfiniteItems();
+        // Now initialized in BoundlessBlocksDataGenerator before providers are created
     }
 
     @Override
     public void generate(Consumer<RecipeJsonProvider> exporter) {
+        System.out.println("=== Recipe Generation ===");
+        System.out.println("Generating recipes for " + InfiniteItem.INFINITE_ITEMS.size() + " infinite items");
 
-        System.out.println("DEBUG: Map size is " + InfiniteItem.INFINITE_ITEMS.size());
         InfiniteItem.INFINITE_ITEMS.forEach((block, item) -> {
             Item vanillaItem = item.getBaseItem();
 
@@ -30,14 +31,10 @@ public class ModRecipeGenerator extends FabricRecipeProvider {
                 ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaItem, 9)
                         .input(item)
                         .criterion(hasItem(item), conditionsFromItem(item))
-                        // Generates IDs like: boundless_blocks:infinite_biomesoplenty_jacaranda_planks_unpack
                         .offerTo(exporter, Registries.ITEM.getId(item).withPath(path -> path + "_unpack"));
             }
         });
-    }
 
-    // Helper method to get the ID since getRecipeIdentifier is protected/internal
-    private Identifier getItemId(Item item) {
-        return net.minecraft.registry.Registries.ITEM.getId(item);
+        System.out.println("Recipe generation complete");
     }
 }

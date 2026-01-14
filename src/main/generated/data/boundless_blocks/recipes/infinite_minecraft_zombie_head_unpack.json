@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_minecraft_zombie_head"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "minecraft:zombie_head"
+  }
+}

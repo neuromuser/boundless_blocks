@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "boundless_blocks:infinite_biomesoplenty_potted_hellbark_sapling"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "biomesoplenty:potted_hellbark_sapling"
+  }
+}
