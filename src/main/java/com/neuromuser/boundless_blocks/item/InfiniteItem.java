@@ -161,4 +161,12 @@ public class InfiniteItem extends BlockItem {
                     Registries.BLOCK.getId(block), e);
         }
     }
+
+    // Change the check to be more inclusive of other mods if desired,
+// or keep it strict but ensure it runs when needed.
+    public static void ensureInitialized() {
+        if (!INITIALIZED.get()) {
+            initializeInfiniteItems(false);
+        }
+    }
 }

@@ -6,6 +6,8 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
 import net.minecraft.data.client.ModelIds;
+import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 
 public class ModModelGenerator extends FabricModelProvider {
     public ModModelGenerator(FabricDataOutput output) {
@@ -13,20 +15,27 @@ public class ModModelGenerator extends FabricModelProvider {
         // REMOVED: InfiniteItem.initializeInfiniteItems();
         // Now initialized in BoundlessBlocksDataGenerator before providers are created
     }
-
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        System.out.println("=== Model Generation ===");
-        System.out.println("Generating models for " + InfiniteItem.INFINITE_ITEMS.size() + " infinite items");
+        // Re-verify initialization just in case
+        InfiniteItem.ensureInitialized();
 
         InfiniteItem.INFINITE_ITEMS.forEach((block, item) -> {
-            blockStateModelGenerator.registerParentedItemModel(
-                    item,
-                    ModelIds.getItemModelId(block.asItem())
-            );
-        });
+            try {
+                // Get the ID of the source block to link the model
+                Identifier blockId = Registries.BLOCK.getId(block);
 
-        System.out.println("Model generation complete");
+                // Only generate if it's a valid block (not air)
+                if (!blockId.getPath().equals("air")) {
+                    blockStateModelGenerator.registerParentedItemModel(
+                            item,
+                            ModelIds.getItemModelId(block.asItem())
+                    );
+                }
+            } catch (Exception e) {
+                System.err.println("Failed to generate model for: " + item.getName());
+            }
+        });
     }
 
     @Override

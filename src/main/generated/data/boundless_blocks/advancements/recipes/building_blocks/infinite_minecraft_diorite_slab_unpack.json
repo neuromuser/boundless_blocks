@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_infinite_minecraft_diorite_slab": {
+    "has_infinite_item": {
       "conditions": {
         "items": [
           {
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_infinite_minecraft_diorite_slab",
+      "has_infinite_item",
       "has_the_recipe"
     ]
   ],

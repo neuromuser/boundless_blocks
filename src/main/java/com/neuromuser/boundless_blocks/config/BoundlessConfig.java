@@ -68,7 +68,7 @@ public class BoundlessConfig {
 
             try {
                 if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("roughlyenoughitems")) {
-                    me.shedaniel.rei.api.client.registry.entry.EntryRegistry.getInstance().refilter();
+                    REICompat.updateFilter();
                 }
             } catch (Exception e) {
                 // Log error if REI API is missing or fails
@@ -77,4 +77,15 @@ public class BoundlessConfig {
             LOGGER.error("Failed to save BoundlessConfig!", e);
         }
     }
+
+    private static class REICompat {
+        private static void updateFilter() {
+            try {
+                me.shedaniel.rei.api.client.registry.entry.EntryRegistry.getInstance().refilter();
+            } catch (Throwable t) {
+                LOGGER.error("Failed to refresh REI filter", t);
+            }
+        }
+    }
 }
+

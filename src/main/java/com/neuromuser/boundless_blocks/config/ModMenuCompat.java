@@ -34,14 +34,6 @@ public class ModMenuCompat implements ModMenuApi {
                     .setSaveConsumer(newValue -> BoundlessConfig.craftStacksCount = newValue)
                     .build());
 
-            // 2. Items Per Stack
-            general.addEntry(entryBuilder.startIntField(
-                            Text.translatable("option.boundless_blocks.stack_size"),
-                            BoundlessConfig.itemsPerStack
-                    )
-                    .setDefaultValue(64)
-                    .setSaveConsumer(newValue -> BoundlessConfig.itemsPerStack = newValue)
-                    .build());
 
             // 3. Keywords List
             general.addEntry(entryBuilder.startStrList(

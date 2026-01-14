@@ -23,48 +23,25 @@ public class BoundlessBlocks implements ModInitializer {
 	public static final RecipeSerializer<InfiniteCraftingRecipe> INFINITE_CRAFTING_SERIALIZER =
 			new SpecialRecipeSerializer<>(InfiniteCraftingRecipe::new);
 
-	private static boolean itemsRegistered = false;
-
 	@Override
 	public void onInitialize() {
 		BoundlessConfig.load();
-		// 1. Register the Recipe Serializer
+
+		// 1. Register Serializer
 		Registry.register(Registries.RECIPE_SERIALIZER,
 				new Identifier(MOD_ID, "infinite_crafting"),
 				INFINITE_CRAFTING_SERIALIZER);
 
-		LOGGER.info("Boundless Blocks initializing...");
+		// 2. IMPORTANT: Run the item registration immediately.
+		// We call it here so it happens during the ModInitializer phase.
+		InfiniteItem.initializeInfiniteItems(true);
 
-		// 2. Register items immediately but use a different approach
-		registerAllInfiniteItems();
+		LOGGER.info("Boundless Blocks: Registered {} items during Init.", InfiniteItem.INFINITE_ITEMS.size());
 
-		// 3. Also register on server start in case new blocks were added
+		// 3. Keep the Server Start event ONLY for logging/debugging, NOT for registering.
 		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
-			if (!itemsRegistered) {
-				registerAllInfiniteItems();
-			}
-
-			LOGGER.info("=== Boundless Blocks Server Start ===");
-			LOGGER.info("Total infinite items: {}", InfiniteItem.INFINITE_ITEMS.size());
-
-			// Log breakdown by namespace
-			Map<String, Integer> namespaceCount = new HashMap<>();
-			InfiniteItem.INFINITE_ITEMS.forEach((block, item) -> {
-				Identifier id = Registries.BLOCK.getId(block);
-				namespaceCount.merge(id.getNamespace(), 1, Integer::sum);
-			});
-
-			namespaceCount.forEach((namespace, count) -> {
-				LOGGER.info("  {}: {} items", namespace, count);
-			});
+			LOGGER.info("=== Boundless Blocks Registry Check ===");
+			LOGGER.info("Final Count: {}", InfiniteItem.INFINITE_ITEMS.size());
 		});
-	}
-
-	private void registerAllInfiniteItems() {
-		if (itemsRegistered) return;
-
-		LOGGER.info("Registering all infinite items...");
-		InfiniteItem.initializeInfiniteItems();
-		itemsRegistered = true;
 	}
 }

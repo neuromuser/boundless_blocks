@@ -41,6 +41,8 @@
 		"fabric-api": "*"
 	},
 	"suggests": {
+		"biomesoplenty": "*",
+		"roughlyenoughitems": "*",
 		"cloth-config": "*"
 	}
 }

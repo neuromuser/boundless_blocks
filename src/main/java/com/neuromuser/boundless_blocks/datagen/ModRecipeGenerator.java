@@ -40,36 +40,29 @@ public class ModRecipeGenerator extends FabricRecipeProvider {
     }
     private void generateUnpackingRecipes(Consumer<RecipeJsonProvider> exporter) {
         int successCount = 0;
-        int skippedCount = 0;
+
         for (Map.Entry<net.minecraft.block.Block, InfiniteItem> entry : InfiniteItem.INFINITE_ITEMS.entrySet()) {
-            InfiniteItem item = entry.getValue();
-            Item vanillaItem = item.getBaseItem();
+            InfiniteItem infiniteItem = entry.getValue();
+            Item vanillaItem = entry.getKey().asItem();
 
-            // Verify both the infinite item and vanilla item are properly registered
-            if (vanillaItem != net.minecraft.item.Items.AIR) {
-                Identifier infiniteItemId = Registries.ITEM.getId(item);
-                Identifier vanillaItemId = Registries.ITEM.getId(vanillaItem);
+            if (vanillaItem == net.minecraft.item.Items.AIR) continue;
 
-                // Double-check the infinite item is actually in the registry
-                if (Registries.ITEM.containsId(infiniteItemId)) {
-                    try {
-                        ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaItem, 9)
-                                .input(item)
-                                .criterion(hasItem(item), conditionsFromItem(item))
-                                .offerTo(exporter, infiniteItemId.withPath(path -> path + "_unpack"));
-                        successCount++;
-                    } catch (Exception e) {
-                        System.err.println("Failed to generate recipe for " + infiniteItemId + ": " + e.getMessage());
-                        skippedCount++;
-                    }
-                } else {
-                    System.err.println("Skipping recipe for unregistered item: " + infiniteItemId);
-                    skippedCount++;
-                }
-            } else {
-                skippedCount++;
+            // Use the item directly. ShapelessRecipeJsonBuilder will extract the ID itself.
+            try {
+                Identifier id = Registries.ITEM.getId(infiniteItem);
+
+                // We use the infinite item's path + _unpack to avoid ID collisions
+                String recipePath = id.getPath() + "_unpack";
+
+                ShapelessRecipeJsonBuilder.create(RecipeCategory.BUILDING_BLOCKS, vanillaItem, 9)
+                        .input(infiniteItem)
+                        .criterion("has_infinite_item", conditionsFromItem(infiniteItem))
+                        .offerTo(exporter, new Identifier(BoundlessBlocks.MOD_ID, recipePath));
+
+                successCount++;
+            } catch (Exception e) {
+                System.err.println("Recipe Gen Error: " + e.getMessage());
             }
         }
-
-        System.out.println("Recipe generation complete: " + successCount + " recipes generated, " + skippedCount + " skipped");
+        System.out.println("Generated " + successCount + " unpacking recipes.");
     }}

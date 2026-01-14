@@ -15,7 +15,7 @@ public class BoundlessBlocksDataGenerator implements DataGeneratorEntrypoint {
 		System.out.println("=== Initializing Infinite Items for Data Generation ===");
 		InfiniteItem.initializeInfiniteItems();
 		System.out.println("Total blocks registered: " + InfiniteItem.INFINITE_ITEMS.size());
-
+		InfiniteItem.initializeInfiniteItems(true);
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
 
 		// Model generation

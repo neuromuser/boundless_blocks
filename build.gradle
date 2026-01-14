@@ -56,25 +56,24 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
 	// Or if using modrinth:
-	modImplementation "curse.maven:biomes-o-plenty-220318:6364066"
-	modImplementation "curse.maven:glitchcore-955399:5787838"
-	modImplementation "curse.maven:terrablender-fabric-565956:6290449"
+	modRuntimeOnly "curse.maven:biomes-o-plenty-220318:6364066"
+	modRuntimeOnly "curse.maven:glitchcore-955399:5787838"
+	modRuntimeOnly "curse.maven:terrablender-fabric-565956:6290449"
 
 	implementation("com.electronwill.night-config:core:3.8.3")
 	implementation("com.electronwill.night-config:toml:3.8.3")
 	implementation("net.jodah:typetools:0.6.3")
 
-	modRuntimeOnly "curse.maven:biomes-o-plenty-220318:6364066"
-	modRuntimeOnly "curse.maven:glitchcore-955399:5787838"
-	modRuntimeOnly "curse.maven:terrablender-fabric-565956:6290449"
+	modImplementation "curse.maven:biomes-o-plenty-220318:6364066"
+	modImplementation "curse.maven:glitchcore-955399:5787838"
+	modImplementation "curse.maven:terrablender-fabric-565956:6290449"
 
 
-	modApi "me.shedaniel.cloth:cloth-config-fabric:11.1.136"
-	modApi "me.shedaniel:RoughlyEnoughItems-fabric:12.1.785"
-	modApi "com.terraformersmc:modmenu:7.2.2"
-	modApi "dev.architectury:architectury-fabric:9.2.14"
+	modCompileOnly "me.shedaniel.cloth:cloth-config-fabric:11.1.136"
+	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:12.1.785"
+	modCompileOnly "com.terraformersmc:modmenu:7.2.2"
 	// Include it in your jar
-	include "curse.maven:cloth-config-348521:5729104"
+	modRuntimeOnly "curse.maven:cloth-config-348521:5729104"
 }
 
 

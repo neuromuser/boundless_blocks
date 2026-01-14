@@ -41,16 +41,15 @@ public class ModLangGenerator extends FabricLanguageProvider {
 
             // Tooltip for infinite items
             translationBuilder.add("tooltip.boundless_blocks.infinite_item.line1", "§bБезкінечний - ніколи не закінчується!");
-            translationBuilder.add("tooltip.boundless_blocks.infinite_item.line2", "§7Клацніть правою кнопкою миші, щоб розмістити без витрат");
+            translationBuilder.add("tooltip.boundless_blocks.infinite_item.line2", "§bМожна розміщувати і дублювати цей тип блоку без витрат!");
 
             // Tooltip for blocks that can become infinite
-            translationBuilder.add("tooltip.boundless_blocks.can_be_infinite", "§aМожна скрафтити в безкінечний блок");
+            translationBuilder.add("tooltip.boundless_blocks.can_be_infinite", "§aМожна зробити безкінечним!");
 
             // Mod Menu config screen translations
             translationBuilder.add("title.boundless_blocks.config", "Налаштування Boundless Blocks");
             translationBuilder.add("category.boundless_blocks.general", "Загальні налаштування");
-            translationBuilder.add("option.boundless_blocks.stacks", "Кількість стеків для крафту");
-            translationBuilder.add("option.boundless_blocks.stack_size", "Предметів у стеку");
+            translationBuilder.add("option.boundless_blocks.stacks", "Кількість стаків для крафту");
             translationBuilder.add("option.boundless_blocks.keywords", "Дозволені ключові слова");
         }
     }
