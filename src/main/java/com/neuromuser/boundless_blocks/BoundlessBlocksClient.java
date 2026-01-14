@@ -12,6 +12,10 @@ public class BoundlessBlocksClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
+            if (stack.getMaxCount() < 64) {
+                return;
+            }
+
             if (stack.getItem() instanceof BlockItem blockItem) {
                 if (!stack.hasCustomName() || !stack.getName().getString().contains("∞")) {
                     if (isBlockSupported(blockItem)) {

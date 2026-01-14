@@ -41,12 +41,25 @@ public class ModMenuCompat implements ModMenuApi {
                             BoundlessConfig.allowedKeywords
                     )
                     .setDefaultValue(Arrays.asList(
-                            "planks", "log", "wood", "stripped", "bricks", "stone", "ore", "block",
-                            "slab", "stairs", "fence", "wall", "glass", "door", "trapdoor", "tile",
-                            "cobblestone", "mossy", "smooth", "polished", "chiseled", "cut",
-                            "concrete", "terracotta", "wool", "sandstone", "prismarine", "purpur",
-                            "quartz", "nether", "end", "blackstone", "deepslate", "copper", "iron",
-                            "gold", "diamond", "emerald", "lapis", "redstone", "coal", "amethyst"
+                            "planks", "log", "wood", "stripped", "stem", "hyphae", "bamboo",
+                            "willow", "cherry", "mahogany", "ebony", "redwood", "baobab",
+
+                            // --- Standard & Modded Stone/Earth ---
+                            "stone", "cobblestone", "mossy", "smooth", "polished", "chiseled",
+                            "cut", "bricks", "tile", "terracotta", "concrete", "wool",
+                            "sandstone", "prismarine", "purpur", "quartz", "blackstone",
+                            "deepslate", "tuff", "calcite", "granite", "diorite", "andesite",
+                            "basalt", "scoria", "scoria_bricks", "limestone", "shale", "slate",
+                            "netherrack", "soul_sand", "mud", "clay", "sand", "gravel",
+
+                            // --- Common Modded Decorative Terms ---
+                            "casing", "andesite_alloy", "girder", "panel", "sheet_metal",
+                            "bracket", "window", "scaffolding", "frame", "pillar", "column",
+                            "plating", "shingle", "paving", "ornate", "layered", "embossed",
+
+                            // --- Shapes & Structures ---
+                            "block", "slab", "stairs", "fence", "wall", "glass", "door",
+                            "trapdoor", "gate", "ladder", "vertical"
                     ))
                     .setTooltip(Text.translatable("tooltip.boundless_blocks.keywords"))
                     .setSaveConsumer(newValue -> BoundlessConfig.allowedKeywords = newValue)
@@ -58,11 +71,19 @@ public class ModMenuCompat implements ModMenuApi {
                             BoundlessConfig.blacklistedKeywords
                     )
                     .setDefaultValue(Arrays.asList(
-                            "air", "water", "lava", "fire", "soul_fire",
-                            "spawner", "portal", "end_portal", "end_gateway",
-                            "flowing", "bubble_column",
-                            "potted_", "wall_",
-                            "command_block", "structure_block", "jigsaw", "barrier", "light", "waystone"
+                            "diamond", "netherite", "gold", "iron", "emerald", "lapis",
+                            "redstone", "coal", "copper", "amethyst", "raw_", "debris",
+                            "obsidian", "crying_obsidian", "lodestone",
+                            "steel", "bronze", "tin", "lead", "silver", "nickel", "zinc",
+                            "platinum", "uranium", "osmium", "aluminum", "brass", "electrum",
+                            "invar", "constantan", "signalum", "lumium", "enderium",
+
+                            "chest", "shulker", "barrel", "hopper", "dispenser",
+                            "dropper", "furnace", "blast_furnace", "smoker", "anvil",
+                            "enchanting_table", "beacon", "conduit", "tank", "battery",
+                            "generator", "energy", "machine", "processor", "engine",
+                            "stone_cutter","end_portal",
+                            "potted_", "wall_", "waystone", "sharestone"
                     ))
                     .setTooltip(Text.translatable("tooltip.boundless_blocks.blacklist"))
                     .setSaveConsumer(newValue -> BoundlessConfig.blacklistedKeywords = newValue)

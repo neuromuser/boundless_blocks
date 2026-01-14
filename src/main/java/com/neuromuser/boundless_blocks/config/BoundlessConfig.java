@@ -25,31 +25,43 @@ public class BoundlessConfig {
     public static List<String> blacklistedKeywords = new ArrayList<>();
 
     private static final List<String> DEFAULT_KEYWORDS = Arrays.asList(
-            // Building blocks
-            "planks", "log", "wood", "stripped", "bricks", "stone", "block",
-            "slab", "stairs", "fence", "wall", "glass", "door", "trapdoor", "tile",
-            "cobblestone", "mossy", "smooth", "polished", "chiseled", "cut",
-            "concrete", "terracotta", "wool", "sandstone", "prismarine", "purpur",
-            "quartz", "nether", "end", "blackstone", "deepslate", "sand",
-            // Ores and minerals
-            "ore", "copper", "iron", "gold", "diamond", "emerald", "lapis",
-            "redstone", "coal", "amethyst",
-            // Create mod blocks
-            "casing", "andesite_alloy", "zinc", "brass", "railway",
-            "girder", "metal", "panel"
+            // --- Standard & Modded Wood ---
+            "planks", "log", "wood", "stripped", "stem", "hyphae", "bamboo",
+            "willow", "cherry", "mahogany", "ebony", "redwood", "baobab",
+
+            // --- Standard & Modded Stone/Earth ---
+            "stone", "cobblestone", "mossy", "smooth", "polished", "chiseled",
+            "cut", "bricks", "tile", "terracotta", "concrete", "wool",
+            "sandstone", "prismarine", "purpur", "quartz", "blackstone",
+            "deepslate", "tuff", "calcite", "granite", "diorite", "andesite",
+            "basalt", "scoria", "scoria_bricks", "limestone", "shale", "slate",
+            "netherrack", "soul_sand", "mud", "clay", "sand", "gravel",
+
+            // --- Common Modded Decorative Terms ---
+            "casing", "andesite_alloy", "girder", "panel", "sheet_metal",
+            "bracket", "window", "scaffolding", "frame", "pillar", "column",
+            "plating", "shingle", "paving", "ornate", "layered", "embossed",
+
+            // --- Shapes & Structures ---
+            "block", "slab", "stairs", "fence", "wall", "glass", "door",
+            "trapdoor", "gate", "ladder", "vertical"
     );
 
     private static final List<String> DEFAULT_BLACKLIST = Arrays.asList(
-            // Technical/non-placeable blocks
-            "air", "water", "lava", "fire", "soul_fire",
-            // Spawners and technical
-            "spawner", "portal", "end_portal", "end_gateway",
-            // Liquids
-            "flowing", "bubble_column",
-            // Plants that need special conditions
-            "potted_", "wall_",
-            // Other technical
-            "command_block", "structure_block", "jigsaw", "barrier", "light"
+            // --- Precious Minerals & Resources (Vanilla + Modded) ---
+            "diamond", "netherite", "gold", "iron", "emerald", "lapis",
+            "redstone", "coal", "copper", "amethyst", "raw_", "debris",
+            "obsidian", "crying_obsidian", "lodestone",
+            "steel", "bronze", "tin", "lead", "silver", "nickel", "zinc",
+            "platinum", "uranium", "osmium", "aluminum", "brass", "electrum",
+            "invar", "constantan", "signalum", "lumium", "enderium",
+
+            "chest", "shulker", "barrel", "hopper", "dispenser",
+            "dropper", "furnace", "blast_furnace", "smoker", "anvil",
+            "enchanting_table", "beacon", "conduit", "tank", "battery",
+            "generator", "energy", "machine", "processor", "engine",
+            "stone_cutter","end_portal",
+            "potted_", "wall_", "waystone", "sharestone"
     );
 
     // GSON Instance fields
