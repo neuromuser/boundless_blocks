@@ -17,6 +17,7 @@ Boundless Blocks allows players to craft infinite versions of building blocks th
 * **Minecraft:** 1.20.1
 * **Fabric Loader:** 0.15.0 or higher
 * **Fabric API**
+* Polymer https://modrinth.com/mod/polymer/
 
 ### Optional
 
