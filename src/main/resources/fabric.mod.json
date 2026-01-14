@@ -26,6 +26,9 @@
 		],
 		"modmenu": [
 			"com.neuromuser.boundless_blocks.config.ModMenuCompat"
+		],
+		"rei_client": [
+			"com.neuromuser.boundless_blocks.BoundlessReiPlugin"
 		]
 	},
 	"mixins": [

@@ -3,6 +3,8 @@ package com.neuromuser.boundless_blocks.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.fabricmc.loader.api.FabricLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileReader;
@@ -13,46 +15,66 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BoundlessConfig {
-    // 1. Define your variables with default values
+    // Standard Fabric Logger
+    private static final Logger LOGGER = LoggerFactory.getLogger("BoundlessBlocks");
+
     public static int craftStacksCount = 9;
     public static int itemsPerStack = 64;
-    public static List<String> allowedKeywords = new ArrayList<>(Arrays.asList(
-            "planks", "log", "wood", "stripped", "bricks", "stone", "ore", "block",
+    public static List<String> allowedKeywords = new ArrayList<>();
+
+    private static final List<String> DEFAULT_KEYWORDS = Arrays.asList(
+            "planks", "log", "wood", "stripped", "bricks", "stone", "block",
             "slab", "stairs", "fence", "wall", "glass", "door", "trapdoor", "tile",
             "cobblestone", "mossy", "smooth", "polished", "chiseled", "cut",
             "concrete", "terracotta", "wool", "sandstone", "prismarine", "purpur",
-            "quartz", "nether", "end", "blackstone", "deepslate", "copper", "iron",
-            "gold", "diamond", "emerald", "lapis", "redstone", "coal", "amethyst"
-    ));
+            "quartz", "nether", "end", "blackstone", "deepslate", "sand"
+    );
 
-    // File location: /config/boundless_config.json
+    // GSON Instance fields
+    private int savedCraftStacksCount = 9;
+    private int savedItemsPerStack = 64;
+    private List<String> savedAllowedKeywords = new ArrayList<>(DEFAULT_KEYWORDS);
+
     private static final File CONFIG_FILE = FabricLoader.getInstance().getConfigDir().resolve("boundless_config.json").toFile();
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
-    // 2. Load method (Call this in your ModInitializer)
     public static void load() {
         if (!CONFIG_FILE.exists()) {
-            save(); // Create default file if it doesn't exist
+            allowedKeywords = new ArrayList<>(DEFAULT_KEYWORDS);
+            save();
             return;
         }
         try (FileReader reader = new FileReader(CONFIG_FILE)) {
             BoundlessConfig data = GSON.fromJson(reader, BoundlessConfig.class);
             if (data != null) {
-                craftStacksCount = data.craftStacksCount;
-                itemsPerStack = data.itemsPerStack;
-                allowedKeywords = data.allowedKeywords;
+                craftStacksCount = data.savedCraftStacksCount;
+                itemsPerStack = data.savedItemsPerStack;
+                // Ensure list isn't null if JSON is corrupted
+                allowedKeywords = data.savedAllowedKeywords != null ? data.savedAllowedKeywords : new ArrayList<>(DEFAULT_KEYWORDS);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to load BoundlessConfig!", e);
         }
     }
 
-    // 3. Save method (Call this in the Cloth Config 'setSavingRunnable')
     public static void save() {
         try (FileWriter writer = new FileWriter(CONFIG_FILE)) {
-            GSON.toJson(new BoundlessConfig(), writer);
+            BoundlessConfig dataToSave = new BoundlessConfig();
+            dataToSave.savedCraftStacksCount = craftStacksCount;
+            dataToSave.savedItemsPerStack = itemsPerStack;
+            dataToSave.savedAllowedKeywords = allowedKeywords;
+
+            GSON.toJson(dataToSave, writer);
+
+            try {
+                if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("roughlyenoughitems")) {
+                    me.shedaniel.rei.api.client.registry.entry.EntryRegistry.getInstance().refilter();
+                }
+            } catch (Exception e) {
+                // Log error if REI API is missing or fails
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("Failed to save BoundlessConfig!", e);
         }
     }
 }
