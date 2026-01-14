@@ -17,8 +17,17 @@ public class BoundlessBlocksDataGenerator implements DataGeneratorEntrypoint {
 		System.out.println("Total blocks registered: " + InfiniteItem.INFINITE_ITEMS.size());
 
 		FabricDataGenerator.Pack pack = fabricDataGenerator.createPack();
+
+		// Model generation
 		pack.addProvider(ModModelGenerator::new);
+
+		// Recipe generation
 		pack.addProvider(ModRecipeGenerator::new);
+
+		// Language generation - English
 		pack.addProvider(ModLangGenerator::new);
+
+		// Language generation - Ukrainian
+		pack.addProvider(ModLangGenerator.Ukrainian::new);
 	}
 }

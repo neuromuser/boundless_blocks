@@ -16,25 +16,38 @@ public class ModMenuCompat implements ModMenuApi {
         return parent -> {
             ConfigBuilder builder = ConfigBuilder.create()
                     .setParentScreen(parent)
-                    .setTitle(Text.translatable("title.mymod.config"));
+                    .setTitle(Text.translatable("title.boundless_blocks.config"));
 
-            ConfigCategory general = builder.getOrCreateCategory(Text.translatable("category.mymod.general"));
+            ConfigCategory general = builder.getOrCreateCategory(
+                    Text.translatable("category.boundless_blocks.general")
+            );
             ConfigEntryBuilder entryBuilder = builder.entryBuilder();
 
             // 1. Craft Stacks Count
-            general.addEntry(entryBuilder.startIntSlider(Text.translatable("option.mymod.stacks"), BoundlessConfig.craftStacksCount, 2, 9)
+            general.addEntry(entryBuilder.startIntSlider(
+                            Text.translatable("option.boundless_blocks.stacks"),
+                            BoundlessConfig.craftStacksCount,
+                            2,
+                            9
+                    )
                     .setDefaultValue(9)
                     .setSaveConsumer(newValue -> BoundlessConfig.craftStacksCount = newValue)
                     .build());
 
             // 2. Items Per Stack
-            general.addEntry(entryBuilder.startIntField(Text.translatable("option.mymod.stack_size"), BoundlessConfig.itemsPerStack)
+            general.addEntry(entryBuilder.startIntField(
+                            Text.translatable("option.boundless_blocks.stack_size"),
+                            BoundlessConfig.itemsPerStack
+                    )
                     .setDefaultValue(64)
                     .setSaveConsumer(newValue -> BoundlessConfig.itemsPerStack = newValue)
                     .build());
 
             // 3. Keywords List
-            general.addEntry(entryBuilder.startStrList(Text.translatable("option.mymod.keywords"), BoundlessConfig.allowedKeywords)
+            general.addEntry(entryBuilder.startStrList(
+                            Text.translatable("option.boundless_blocks.keywords"),
+                            BoundlessConfig.allowedKeywords
+                    )
                     .setDefaultValue(Arrays.asList(
                             "planks", "log", "wood", "stripped", "bricks", "stone", "ore", "block",
                             "slab", "stairs", "fence", "wall", "glass", "door", "trapdoor", "tile",
@@ -46,10 +59,7 @@ public class ModMenuCompat implements ModMenuApi {
                     .setSaveConsumer(newValue -> BoundlessConfig.allowedKeywords = newValue)
                     .build());
 
-            builder.setSavingRunnable(() -> {
-                // IMPORTANT: Ensure you have a method to save BoundlessConfig to a file!
-                BoundlessConfig.save();
-            });
+            builder.setSavingRunnable(BoundlessConfig::save);
 
             return builder.build();
         };

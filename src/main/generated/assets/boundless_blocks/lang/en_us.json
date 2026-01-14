@@ -1,3 +1,11 @@
 {
-  "item.boundless_blocks.infinite_format": "∞ %s ∞"
+  "category.boundless_blocks.general": "General Settings",
+  "item.boundless_blocks.infinite_format": "∞ %s ∞",
+  "option.boundless_blocks.keywords": "Allowed Keywords",
+  "option.boundless_blocks.stack_size": "Items Per Stack",
+  "option.boundless_blocks.stacks": "Craft Stacks Count",
+  "title.boundless_blocks.config": "Boundless Blocks Configuration",
+  "tooltip.boundless_blocks.can_be_infinite": "§aCan be crafted into an infinite block",
+  "tooltip.boundless_blocks.infinite_item.line1": "§bInfinite - never runs out!",
+  "tooltip.boundless_blocks.infinite_item.line2": "§7Right-click to place without consuming"
 }

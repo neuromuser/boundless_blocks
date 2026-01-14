@@ -1,0 +1,11 @@
+{
+  "category.boundless_blocks.general": "Загальні налаштування",
+  "item.boundless_blocks.infinite_format": "∞ %s ∞",
+  "option.boundless_blocks.keywords": "Дозволені ключові слова",
+  "option.boundless_blocks.stack_size": "Предметів у стеку",
+  "option.boundless_blocks.stacks": "Кількість стеків для крафту",
+  "title.boundless_blocks.config": "Налаштування Boundless Blocks",
+  "tooltip.boundless_blocks.can_be_infinite": "§aМожна скрафтити в безкінечний блок",
+  "tooltip.boundless_blocks.infinite_item.line1": "§bБезкінечний - ніколи не закінчується!",
+  "tooltip.boundless_blocks.infinite_item.line2": "§7Клацніть правою кнопкою миші, щоб розмістити без витрат"
+}

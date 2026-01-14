@@ -51,6 +51,7 @@ public class InfiniteItem extends BlockItem {
         }
 
         int beforeCount = INFINITE_ITEMS.size();
+        int skippedCount = 0;
 
         for (Block block : Registries.BLOCK) {
             Identifier id = Registries.BLOCK.getId(block);
@@ -59,16 +60,37 @@ public class InfiniteItem extends BlockItem {
             if (id.getNamespace().equals(BoundlessBlocks.MOD_ID)) continue;
 
             Item vanillaItem = block.asItem();
-            if (vanillaItem == Items.AIR) continue;
+            if (vanillaItem == Items.AIR) {
+                skippedCount++;
+                continue;
+            }
 
             // Register blocks from minecraft and biomesoplenty
             if (id.getNamespace().equals("minecraft") || id.getNamespace().equals("biomesoplenty")) {
+                // Additional validation: skip blocks that shouldn't have infinite versions
+                String path = id.getPath();
+
+                // Skip wall signs, they're not placeable items
+                if (path.contains("wall_sign") && !path.equals("wall_sign")) {
+                    skippedCount++;
+                    continue;
+                }
+
+                // Skip technical blocks
+                if (path.contains("potted_") || path.contains("_cauldron") ||
+                        path.equals("water") || path.equals("lava") || path.equals("fire") ||
+                        path.equals("portal") || path.equals("end_portal") || path.equals("end_gateway")) {
+                    skippedCount++;
+                    continue;
+                }
+
                 registerInfiniteBlock(block);
             }
         }
 
         int newCount = INFINITE_ITEMS.size() - beforeCount;
-        BoundlessBlocks.LOGGER.info("Initialized {} infinite items (total: {})", newCount, INFINITE_ITEMS.size());
+        BoundlessBlocks.LOGGER.info("Initialized {} infinite items (total: {}, skipped: {})",
+                newCount, INFINITE_ITEMS.size(), skippedCount);
     }
 
     @Override
@@ -105,6 +127,13 @@ public class InfiniteItem extends BlockItem {
         try {
             Identifier id = Registries.BLOCK.getId(block);
 
+            // Validate the block has a valid item
+            Item blockItem = block.asItem();
+            if (blockItem == Items.AIR) {
+                BoundlessBlocks.LOGGER.debug("Skipping block without item: {}", id);
+                return;
+            }
+
             // Create item ID
             String path = "infinite_" + id.getNamespace() + "_" + id.getPath();
             path = path.replace(':', '_').replace('/', '_');
@@ -125,9 +154,11 @@ public class InfiniteItem extends BlockItem {
             Registry.register(Registries.ITEM, itemId, item);
 
             INFINITE_ITEMS.put(block, item);
+            BoundlessBlocks.LOGGER.debug("Registered infinite item: {}", itemId);
 
         } catch (Exception e) {
-            BoundlessBlocks.LOGGER.error("Failed to register infinite block: {}", block, e);
+            BoundlessBlocks.LOGGER.error("Failed to register infinite block: {}",
+                    Registries.BLOCK.getId(block), e);
         }
     }
 }
