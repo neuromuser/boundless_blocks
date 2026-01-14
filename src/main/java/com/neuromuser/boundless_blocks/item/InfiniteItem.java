@@ -32,21 +32,6 @@ public class InfiniteItem extends BlockItem {
             return;
         }
 
-        BoundlessBlocks.LOGGER.info("Starting infinite items registration...");
-        long startTime = System.currentTimeMillis();
-
-        int minecraftCount = 0;
-        int bopCount = 0;
-        int totalBlocks = 0;
-
-        // First, count total blocks to process
-        for (Block block : Registries.BLOCK) {
-            totalBlocks++;
-        }
-
-        BoundlessBlocks.LOGGER.info("Processing {} total blocks", totalBlocks);
-
-        // Process all blocks in the registry
         for (Block block : Registries.BLOCK) {
             Identifier id = Registries.BLOCK.getId(block);
 
@@ -56,24 +41,10 @@ public class InfiniteItem extends BlockItem {
             Item vanillaItem = block.asItem();
             if (vanillaItem == Items.AIR) continue;
 
-            // Only include Minecraft and BOP blocks
             if (id.getNamespace().equals("minecraft") || id.getNamespace().equals("biomesoplenty")) {
-                // Check if this is a building block we want
-                if (isBuildingBlock(id)) {
-                    registerInfiniteBlock(block);
-
-                    if (id.getNamespace().equals("minecraft")) {
-                        minecraftCount++;
-                    } else {
-                        bopCount++;
-                    }
-                }
+                registerInfiniteBlock(block);
             }
         }
-
-        long endTime = System.currentTimeMillis();
-        BoundlessBlocks.LOGGER.info("Registered {} items ({} Minecraft, {} BOP) in {} ms",
-                minecraftCount + bopCount, minecraftCount, bopCount, endTime - startTime);
     }
 
     private static boolean isBuildingBlock(Identifier id) {
