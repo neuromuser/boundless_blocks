@@ -1,5 +1,6 @@
 package com.neuromuser.boundless_blocks;
 
+import com.neuromuser.boundless_blocks.config.BoundlessConfig;
 import com.neuromuser.boundless_blocks.item.InfiniteItem;
 import com.neuromuser.boundless_blocks.recipe.InfiniteCraftingRecipe;
 import net.fabricmc.api.ModInitializer;
@@ -26,6 +27,7 @@ public class BoundlessBlocks implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		BoundlessConfig.load();
 		// 1. Register the Recipe Serializer
 		Registry.register(Registries.RECIPE_SERIALIZER,
 				new Identifier(MOD_ID, "infinite_crafting"),
