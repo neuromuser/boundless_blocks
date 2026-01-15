@@ -17,8 +17,8 @@ import net.minecraft.world.World;
  */
 public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
 
-    public InfiniteUnpackingRecipe(Identifier id, CraftingRecipeCategory category) {
-        super(id, category);
+    public InfiniteUnpackingRecipe(CraftingRecipeCategory category) {
+        super(category);
     }
 
     @Override

@@ -21,8 +21,8 @@ public class CraftingResultSlotMixin {
     private void checkInfiniteCraft(PlayerEntity player, ItemStack stack, CallbackInfo ci) {
         player.getWorld().getRecipeManager()
                 .getFirstMatch(net.minecraft.recipe.RecipeType.CRAFTING, input, player.getWorld())
-                .ifPresent(recipe -> {
-                    if (recipe instanceof InfiniteCraftingRecipe) {
+                .ifPresent(recipeEntry -> {
+                    if (recipeEntry.value() instanceof InfiniteCraftingRecipe) {
                         input.clear();
                     }
                 });

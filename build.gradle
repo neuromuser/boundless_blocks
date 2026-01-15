@@ -68,10 +68,7 @@ dependencies {
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
 	modCompileOnly "com.terraformersmc:modmenu:${modmenu_version}"
 
-	// Include it in your jar
-	modRuntimeOnly "curse.maven:cloth-config-348521:5729104"
-
-	modImplementation "eu.pb4:polymer-core:0.5.9+1.20.1"
+	modImplementation "eu.pb4:polymer-core:0.6.3+1.20.2"
 }
 
 

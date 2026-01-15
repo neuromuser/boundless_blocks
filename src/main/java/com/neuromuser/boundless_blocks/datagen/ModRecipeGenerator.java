@@ -4,6 +4,7 @@ import com.neuromuser.boundless_blocks.BoundlessBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.data.server.recipe.ComplexRecipeJsonBuilder;
+import net.minecraft.data.server.recipe.RecipeExporter;
 import net.minecraft.data.server.recipe.RecipeJsonProvider;
 
 import java.util.function.Consumer;
@@ -14,7 +15,7 @@ public class ModRecipeGenerator extends FabricRecipeProvider {
     }
 
     @Override
-    public void generate(Consumer<RecipeJsonProvider> exporter) {
+    public void generate(RecipeExporter exporter) {
         System.out.println("=== Generating Dynamic Recipe Serializers ===");
 
         // Register the crafting serializer (N stacks -> 1 infinite)

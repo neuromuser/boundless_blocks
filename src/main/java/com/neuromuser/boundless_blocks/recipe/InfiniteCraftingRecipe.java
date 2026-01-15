@@ -19,8 +19,8 @@ import java.util.Set;
 
 public class InfiniteCraftingRecipe extends SpecialCraftingRecipe {
 
-    public InfiniteCraftingRecipe(Identifier id, CraftingRecipeCategory category) {
-        super(id, category);
+    public InfiniteCraftingRecipe(CraftingRecipeCategory category) {
+        super(category);
     }
 
     @Override
