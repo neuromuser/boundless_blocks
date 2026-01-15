@@ -120,6 +120,46 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
     }
 
     @Override
+    public net.minecraft.util.TypedActionResult<ItemStack> use(World world, PlayerEntity player, net.minecraft.util.Hand hand) {
+        ItemStack stack = player.getStackInHand(hand);
+
+        if (player.isSneaking() && !world.isClient) {
+            Block block = getStoredBlock(stack);
+            if (block == null) {
+                return net.minecraft.util.TypedActionResult.fail(stack);
+            }
+
+            Item blockItem = block.asItem();
+            int remainingToGive = 9;
+
+            for (int i = 0; i < 9; i++) {
+                ItemStack slotStack = player.getInventory().getStack(i);
+
+                if (slotStack.isEmpty()) {
+                    int toAdd = Math.min(remainingToGive, blockItem.getMaxCount());
+                    player.getInventory().setStack(i, new ItemStack(blockItem, toAdd));
+                    remainingToGive -= toAdd;
+                    if (remainingToGive <= 0) break;
+                } else if (slotStack.getItem() == blockItem) {
+                    int canAdd = blockItem.getMaxCount() - slotStack.getCount();
+                    if (canAdd > 0) {
+                        int toAdd = Math.min(remainingToGive, canAdd);
+                        slotStack.increment(toAdd);
+                        remainingToGive -= toAdd;
+                        if (remainingToGive <= 0) break;
+                    }
+                }
+            }
+
+            if (remainingToGive < 9) {
+                return net.minecraft.util.TypedActionResult.success(stack);
+            }
+        }
+
+        return net.minecraft.util.TypedActionResult.pass(stack);
+    }
+
+    @Override
     public boolean hasRecipeRemainder() {
         return true;
     }
