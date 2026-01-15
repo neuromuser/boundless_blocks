@@ -23,6 +23,7 @@ public class BoundlessConfig {
     public static int itemsPerStack = 64;
     public static List<String> allowedKeywords = new ArrayList<>();
     public static List<String> blacklistedKeywords = new ArrayList<>();
+    public static boolean allowUnpacking = true;
 
     private static final List<String> DEFAULT_KEYWORDS = Arrays.asList(
             // --- Standard & Modded Wood ---
@@ -67,6 +68,7 @@ public class BoundlessConfig {
     // GSON Instance fields
     private int savedCraftStacksCount = 9;
     private int savedItemsPerStack = 64;
+    private boolean savedAllowUnpacking = true;
     private List<String> savedAllowedKeywords = new ArrayList<>(DEFAULT_KEYWORDS);
     private List<String> savedBlacklistedKeywords = new ArrayList<>(DEFAULT_BLACKLIST);
 
@@ -87,6 +89,7 @@ public class BoundlessConfig {
             if (data != null) {
                 craftStacksCount = data.savedCraftStacksCount;
                 itemsPerStack = data.savedItemsPerStack;
+                allowUnpacking = data.savedAllowUnpacking;
                 // Ensure lists aren't null if JSON is corrupted
                 allowedKeywords = data.savedAllowedKeywords != null ? data.savedAllowedKeywords : new ArrayList<>(DEFAULT_KEYWORDS);
                 blacklistedKeywords = data.savedBlacklistedKeywords != null ? data.savedBlacklistedKeywords : new ArrayList<>(DEFAULT_BLACKLIST);
@@ -105,6 +108,7 @@ public class BoundlessConfig {
             BoundlessConfig dataToSave = new BoundlessConfig();
             dataToSave.savedCraftStacksCount = craftStacksCount;
             dataToSave.savedItemsPerStack = itemsPerStack;
+            dataToSave.savedAllowUnpacking = allowUnpacking;
             dataToSave.savedAllowedKeywords = allowedKeywords;
             dataToSave.savedBlacklistedKeywords = blacklistedKeywords;
 

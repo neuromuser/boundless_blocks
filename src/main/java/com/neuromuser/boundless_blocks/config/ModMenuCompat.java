@@ -27,13 +27,21 @@ public class ModMenuCompat implements ModMenuApi {
             general.addEntry(entryBuilder.startIntSlider(
                             Text.translatable("option.boundless_blocks.stacks"),
                             BoundlessConfig.craftStacksCount,
-                            2,
+                            1,
                             9
                     )
                     .setDefaultValue(9)
                     .setSaveConsumer(newValue -> BoundlessConfig.craftStacksCount = newValue)
                     .build());
 
+            general.addEntry(entryBuilder.startBooleanToggle(
+                            Text.translatable("option.boundless_blocks.allow_unpacking"),
+                            BoundlessConfig.allowUnpacking
+                    )
+                    .setDefaultValue(true)
+                    .setTooltip(Text.translatable("tooltip.boundless_blocks.allow_unpacking"))
+                    .setSaveConsumer(newValue -> BoundlessConfig.allowUnpacking = newValue)
+                    .build());
 
             // 3. Keywords List
             general.addEntry(entryBuilder.startStrList(
