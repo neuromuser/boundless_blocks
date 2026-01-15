@@ -11,10 +11,9 @@
   "tooltip.boundless_blocks.allow_unpacking": "Allow converting infinite blocks back to regular blocks",
   "tooltip.boundless_blocks.blacklist": "Blocks containing these words CANNOT be crafted (takes priority)",
   "tooltip.boundless_blocks.can_be_infinite": "§aCan be crafted into an infinite block",
-  "tooltip.boundless_blocks.infinite_item.line1": "§bInfinite - never runs out!",
-  "tooltip.boundless_blocks.infinite_item.line2": "§7Right-click to place without consuming",
+  "tooltip.boundless_blocks.infinite_item.line1": "§bNever runs out",
   "tooltip.boundless_blocks.keywords": "Blocks containing these words can be crafted",
   "tooltip.boundless_blocks.remove_picked": "Auto-remove picked blocks if you have infinite version",
   "tooltip.boundless_blocks.stack_size": "Items per stack required (1-64)",
-  "tooltip.boundless_blocks.stacks": "How many stacks needed to craft (2-9)"
+  "tooltip.boundless_blocks.stacks": "How many stacks needed to craft (1-9)"
 }

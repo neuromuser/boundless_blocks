@@ -58,11 +58,6 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
                         Text.translatable("tooltip.boundless_blocks.infinite_item.line1")
                 )
         ));
-        lore.add(NbtString.of(
-                Text.Serializer.toJson(
-                        Text.translatable("tooltip.boundless_blocks.infinite_item.line2")
-                )
-        ));
 
         Identifier id = Registries.BLOCK.getId(block);
         lore.add(NbtString.of(
