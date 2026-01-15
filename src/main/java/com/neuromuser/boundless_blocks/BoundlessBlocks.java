@@ -56,6 +56,7 @@ public class BoundlessBlocks implements ModInitializer {
 			);
 		});
 
+
 		LOGGER.info("Boundless Blocks initialized - recipes will work with any block!");
 		LOGGER.info("Configured keywords: {}", String.join(", ", BoundlessConfig.allowedKeywords));
 	}

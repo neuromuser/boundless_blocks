@@ -58,11 +58,6 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
                         Text.translatable("tooltip.boundless_blocks.infinite_item.line1")
                 )
         ));
-        lore.add(NbtString.of(
-                Text.Serializer.toJson(
-                        Text.translatable("tooltip.boundless_blocks.infinite_item.line2")
-                )
-        ));
 
         Identifier id = Registries.BLOCK.getId(block);
         lore.add(NbtString.of(
@@ -70,6 +65,10 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
         ));
 
         display.put("Lore", lore);
+
+        NbtCompound serverData = clientStack.getOrCreateNbt();
+        serverData.putString(BLOCK_ID_KEY, id.toString());
+
         return clientStack;
     }
 
@@ -120,6 +119,46 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
     }
 
     @Override
+    public net.minecraft.util.TypedActionResult<ItemStack> use(World world, PlayerEntity player, net.minecraft.util.Hand hand) {
+        ItemStack stack = player.getStackInHand(hand);
+
+        if (player.isSneaking() && !world.isClient) {
+            Block block = getStoredBlock(stack);
+            if (block == null) {
+                return net.minecraft.util.TypedActionResult.fail(stack);
+            }
+
+            Item blockItem = block.asItem();
+            int remainingToGive = 9;
+
+            for (int i = 0; i < 9; i++) {
+                ItemStack slotStack = player.getInventory().getStack(i);
+
+                if (slotStack.isEmpty()) {
+                    int toAdd = Math.min(remainingToGive, blockItem.getMaxCount());
+                    player.getInventory().setStack(i, new ItemStack(blockItem, toAdd));
+                    remainingToGive -= toAdd;
+                    if (remainingToGive <= 0) break;
+                } else if (slotStack.getItem() == blockItem) {
+                    int canAdd = blockItem.getMaxCount() - slotStack.getCount();
+                    if (canAdd > 0) {
+                        int toAdd = Math.min(remainingToGive, canAdd);
+                        slotStack.increment(toAdd);
+                        remainingToGive -= toAdd;
+                        if (remainingToGive <= 0) break;
+                    }
+                }
+            }
+
+            if (remainingToGive < 9) {
+                return net.minecraft.util.TypedActionResult.success(stack);
+            }
+        }
+
+        return net.minecraft.util.TypedActionResult.pass(stack);
+    }
+
+    @Override
     public boolean hasRecipeRemainder() {
         return true;
     }
@@ -157,11 +196,9 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
         String id = Registries.BLOCK.getId(block).toString();
 
         nbt.putString(BLOCK_ID_KEY, id);
-        nbt.putString("BlockReference", id);
 
-        NbtCompound display = nbt.getCompound("display");
-        display.putString("StoredBlock", id);
-        nbt.put("display", display);
+        NbtCompound publicData = stack.getOrCreateSubNbt("PublicBukkitValues");
+        publicData.putString("boundless_blocks:block_id", id);
     }
 
     public static Block getStoredBlock(ItemStack stack) {
@@ -178,6 +215,12 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
 
         if (nbt.contains(BLOCK_ID_KEY)) {
             id = nbt.getString(BLOCK_ID_KEY);
+        } else if (nbt.contains("PublicBukkitValues")) {
+            NbtCompound publicData = nbt.getCompound("PublicBukkitValues");
+            if (publicData.contains("boundless_blocks:block_id")) {
+                id = publicData.getString("boundless_blocks:block_id");
+                nbt.putString(BLOCK_ID_KEY, id);
+            }
         } else if (nbt.contains("display")) {
             NbtCompound display = nbt.getCompound("display");
             if (display.contains("StoredBlock")) {
@@ -187,6 +230,10 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
         } else if (nbt.contains("BlockReference")) {
             id = nbt.getString("BlockReference");
             nbt.putString(BLOCK_ID_KEY, id);
+        }
+
+        if (id == null) {
+            return null;
         }
 
         Identifier identifier = Identifier.tryParse(id);

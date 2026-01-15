@@ -3,7 +3,9 @@
 	"package": "com.neuromuser.boundless_blocks.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"CraftingResultSlotMixin"
+		"CraftingResultSlotMixin",
+		"ItemEntityMixin",
+		"ServerPlayerEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

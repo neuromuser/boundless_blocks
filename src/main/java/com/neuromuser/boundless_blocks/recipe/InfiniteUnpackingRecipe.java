@@ -23,6 +23,10 @@ public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
 
     @Override
     public boolean matches(RecipeInputInventory inventory, World world) {
+        if (!com.neuromuser.boundless_blocks.config.BoundlessConfig.allowUnpacking) {
+            return false;
+        }
+
         int infiniteItemCount = 0;
         int totalItemCount = 0;
 
