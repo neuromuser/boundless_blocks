@@ -4,6 +4,7 @@
   "option.boundless_blocks.allow_unpacking": "Allow Unpacking",
   "option.boundless_blocks.blacklist": "Blacklisted Keywords",
   "option.boundless_blocks.keywords": "Allowed Keywords",
+  "option.boundless_blocks.remove_picked": "Remove Picked Blocks",
   "option.boundless_blocks.stack_size": "Items Per Stack",
   "option.boundless_blocks.stacks": "Craft Stacks Count",
   "title.boundless_blocks.config": "Boundless Blocks Configuration",
@@ -13,6 +14,7 @@
   "tooltip.boundless_blocks.infinite_item.line1": "§bInfinite - never runs out!",
   "tooltip.boundless_blocks.infinite_item.line2": "§7Right-click to place without consuming",
   "tooltip.boundless_blocks.keywords": "Blocks containing these words can be crafted",
+  "tooltip.boundless_blocks.remove_picked": "Auto-remove picked blocks if you have infinite version",
   "tooltip.boundless_blocks.stack_size": "Items per stack required (1-64)",
-  "tooltip.boundless_blocks.stacks": "How many stacks needed to craft (1-9)"
+  "tooltip.boundless_blocks.stacks": "How many stacks needed to craft (2-9)"
 }

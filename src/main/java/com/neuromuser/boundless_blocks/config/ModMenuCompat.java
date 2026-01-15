@@ -43,6 +43,15 @@ public class ModMenuCompat implements ModMenuApi {
                     .setSaveConsumer(newValue -> BoundlessConfig.allowUnpacking = newValue)
                     .build());
 
+            general.addEntry(entryBuilder.startBooleanToggle(
+                            Text.translatable("option.boundless_blocks.remove_picked"),
+                            BoundlessConfig.removePickedBlocks
+                    )
+                    .setDefaultValue(true)
+                    .setTooltip(Text.translatable("tooltip.boundless_blocks.remove_picked"))
+                    .setSaveConsumer(newValue -> BoundlessConfig.removePickedBlocks = newValue)
+                    .build());
+
             // 3. Keywords List
             general.addEntry(entryBuilder.startStrList(
                             Text.translatable("option.boundless_blocks.keywords"),
