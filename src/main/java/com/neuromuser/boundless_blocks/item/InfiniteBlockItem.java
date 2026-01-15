@@ -121,6 +121,9 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
     @Override
     public net.minecraft.util.TypedActionResult<ItemStack> use(World world, PlayerEntity player, net.minecraft.util.Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
+        if (!com.neuromuser.boundless_blocks.config.BoundlessConfig.allowUnpacking) {
+            return net.minecraft.util.TypedActionResult.fail(stack);
+        }
 
         if (player.isSneaking() && !world.isClient) {
             Block block = getStoredBlock(stack);
