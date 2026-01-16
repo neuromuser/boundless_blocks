@@ -54,14 +54,14 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
         NbtList lore = new NbtList();
 
         lore.add(NbtString.of(
-                Text.Serializer.toJson(
+                Text.Serialization.toJsonString(
                         Text.translatable("tooltip.boundless_blocks.infinite_item.line1")
                 )
         ));
 
         Identifier id = Registries.BLOCK.getId(block);
         lore.add(NbtString.of(
-                Text.Serializer.toJson(Text.literal("§7" + id))
+                Text.Serialization.toJsonString(Text.literal("§7" + id))
         ));
 
         display.put("Lore", lore);
