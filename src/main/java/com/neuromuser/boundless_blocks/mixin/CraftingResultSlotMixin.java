@@ -15,16 +15,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(CraftingResultSlot.class)
 public class CraftingResultSlotMixin {
     @Shadow @Final private RecipeInputInventory input;
-    @Shadow @Final private PlayerEntity player;
 
     @Inject(method = "onTakeItem", at = @At("HEAD"))
-    private void checkInfiniteCraft(PlayerEntity player, ItemStack stack, CallbackInfo ci) {
+    private void onTakeInfiniteItem(PlayerEntity player, ItemStack stack, CallbackInfo ci) {
         player.getWorld().getRecipeManager()
                 .getFirstMatch(net.minecraft.recipe.RecipeType.CRAFTING, input, player.getWorld())
                 .ifPresent(recipe -> {
-                    if (recipe instanceof InfiniteCraftingRecipe) {
-                        input.clear();
-                    }
+                    if (recipe instanceof InfiniteCraftingRecipe) input.clear();
                 });
     }
 }
