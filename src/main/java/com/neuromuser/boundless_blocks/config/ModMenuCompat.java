@@ -68,25 +68,26 @@ public class ModMenuCompat implements ModMenuApi {
                             BoundlessConfig.allowedKeywords
                     )
                     .setDefaultValue(Arrays.asList(
+                            //Standard
                             "planks", "log", "wood", "stripped", "stem", "hyphae", "bamboo",
                             "willow", "cherry", "mahogany", "ebony", "redwood", "baobab",
-
-                            // --- Standard & Modded Stone/Earth ---
                             "stone", "cobblestone", "mossy", "smooth", "polished", "chiseled",
                             "cut", "bricks", "tile", "terracotta", "concrete", "wool",
                             "sandstone", "prismarine", "purpur", "quartz", "blackstone",
                             "deepslate", "tuff", "calcite", "granite", "diorite", "andesite",
                             "basalt", "scoria", "scoria_bricks", "limestone", "shale", "slate",
                             "netherrack", "soul_sand", "mud", "clay", "sand", "gravel",
+                            "slab", "stairs", "fence", "wall", "glass",
 
-                            // --- Common Modded Decorative Terms ---
+                            // Common Natural Blocks
+                            "dirt", "grass_block", "podzol", "mycelium", "coarse_dirt", "rooted_dirt",
+                            "snow", "ice", "packed_ice", "blue_ice", "powder_snow",
+                            "end_stone", "nylium", "warped_nylium", "crimson_nylium",
+                            "packed_mud", "mud_bricks",
+                            // Modded decor
                             "casing", "andesite_alloy", "girder", "panel", "sheet_metal",
                             "bracket", "window", "scaffolding", "frame", "pillar", "column",
-                            "plating", "shingle", "paving", "ornate", "layered", "embossed",
-
-                            // --- Shapes & Structures ---
-                            "block", "slab", "stairs", "fence", "wall", "glass", "door",
-                            "trapdoor", "gate", "ladder", "vertical"
+                            "plating", "shingle", "paving", "ornate", "layered", "embossed"
                     ))
                     .setTooltip(Text.translatable("tooltip.boundless_blocks.keywords"))
                     .setSaveConsumer(newValue -> BoundlessConfig.allowedKeywords = newValue)
@@ -104,12 +105,11 @@ public class ModMenuCompat implements ModMenuApi {
                             "steel", "bronze", "tin", "lead", "silver", "nickel", "zinc",
                             "platinum", "uranium", "osmium", "aluminum", "brass", "electrum",
                             "invar", "constantan", "signalum", "lumium", "enderium",
-
                             "chest", "shulker", "barrel", "hopper", "dispenser",
                             "dropper", "furnace", "blast_furnace", "smoker", "anvil",
                             "enchanting_table", "beacon", "conduit", "tank", "battery",
                             "generator", "energy", "machine", "processor", "engine",
-                            "stone_cutter","end_portal",
+                            "stone_cutter","end_portal", "kelp",
                             "potted_", "wall_", "waystone", "sharestone"
                     ))
                     .setTooltip(Text.translatable("tooltip.boundless_blocks.blacklist"))
