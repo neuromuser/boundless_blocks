@@ -12,20 +12,30 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.recipe.input.CraftingRecipeInput;
-
 @Mixin(CraftingResultSlot.class)
-public class CraftingResultSlotMixin {
-    @Shadow @Final private CraftingRecipeInput input;
+public abstract class CraftingResultSlotMixin {
 
-    @Inject(method = "onTakeItem", at = @At("HEAD"))
-    private void onTakeInfiniteItem(PlayerEntity player, ItemStack stack, CallbackInfo ci) {
+    @Final private RecipeInputInventory craftingInventory;
+    @Shadow @Final private PlayerEntity player;
+
+    @Inject(method = "onCrafted(Lnet/minecraft/item/ItemStack;)V", at = @At("HEAD"))
+    private void onInfiniteCraft(ItemStack stack, CallbackInfo ci) {
         player.getWorld().getRecipeManager()
-                .getFirstMatch(net.minecraft.recipe.RecipeType.CRAFTING, input, player.getWorld())
+                .listAllOfType(net.minecraft.recipe.RecipeType.CRAFTING)
+                .stream()
+                .filter(entry -> entry.value().matches(
+                        craftingInventory.createRecipeInput(),
+                        player.getWorld()
+                ))
+                .findFirst()
                 .ifPresent(recipe -> {
                     if (recipe.value() instanceof InfiniteCraftingRecipe) {
-                        for (int i = 0; i < input.getSize(); i++) {
-                            input.getStackInSlot(i).setCount(0);
+                        // Consume all items in the crafting grid
+                        for (int i = 0; i < craftingInventory.size(); i++) {
+                            ItemStack slotStack = craftingInventory.getStack(i);
+                            if (!slotStack.isEmpty()) {
+                                slotStack.decrement(64);
+                            }
                         }
                     }
                 });

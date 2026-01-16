@@ -8,9 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.recipe.input.CraftingRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
-import net.minecraft.recipe.input.CraftingRecipeInput;
 
 public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
 
@@ -23,8 +23,8 @@ public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
         if (!BoundlessConfig.allowUnpacking) return false;
 
         int items = 0;
-        for (int i = 0; i < inv.getSize(); i++) {  // size() → getSize()
-            ItemStack stack = inv.getStackInSlot(i);  // getStack() → getStackInSlot()
+        for (int i = 0; i < inv.getSize(); i++) {
+            ItemStack stack = inv.getStackInSlot(i);
             if (stack.isEmpty()) continue;
 
             items++;
@@ -42,10 +42,15 @@ public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
         return items == 1;
     }
 
+    // Add overload for RecipeInputInventory
+    public boolean matches(RecipeInputInventory inv, World world) {
+        return matches(inv.createRecipeInput(), world);
+    }
+
     @Override
     public ItemStack craft(CraftingRecipeInput inv, RegistryWrapper.WrapperLookup lookup) {
-        for (int i = 0; i < inv.getSize(); i++) {  // size() → getSize()
-            ItemStack stack = inv.getStackInSlot(i);  // getStack() → getStackInSlot()
+        for (int i = 0; i < inv.getSize(); i++) {
+            ItemStack stack = inv.getStackInSlot(i);
             if (!stack.isEmpty()) {
                 net.minecraft.block.Block block = InfiniteBlockItem.getBlock(stack);
                 if (block != null) return new ItemStack(block.asItem(), 9);
