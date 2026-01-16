@@ -5,119 +5,61 @@ import com.terraformersmc.modmenu.api.ModMenuApi;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import java.util.Arrays;
 
 public class ModMenuCompat implements ModMenuApi {
-
     @Override
-    public ConfigScreenFactory<Screen> getModConfigScreenFactory() {
+    public ConfigScreenFactory<?> getModConfigScreenFactory() {
         return parent -> {
             ConfigBuilder builder = ConfigBuilder.create()
                     .setParentScreen(parent)
                     .setTitle(Text.translatable("title.boundless_blocks.config"));
 
-            ConfigCategory general = builder.getOrCreateCategory(
-                    Text.translatable("category.boundless_blocks.general")
-            );
-            ConfigEntryBuilder entryBuilder = builder.entryBuilder();
+            ConfigCategory general = builder.getOrCreateCategory(Text.translatable("category.boundless_blocks.general"));
+            ConfigEntryBuilder entry = builder.entryBuilder();
 
-            // 1. Craft Stacks Count
-            general.addEntry(entryBuilder.startIntSlider(
+            general.addEntry(entry.startIntSlider(
                             Text.translatable("option.boundless_blocks.stacks"),
-                            BoundlessConfig.craftStacksCount,
-                            1,
-                            9
-                    )
+                            BoundlessConfig.craftStacksCount, 1, 9)
                     .setDefaultValue(9)
-                    .setSaveConsumer(newValue -> BoundlessConfig.craftStacksCount = newValue)
+                    .setSaveConsumer(v -> BoundlessConfig.craftStacksCount = v)
                     .build());
 
-            general.addEntry(entryBuilder.startBooleanToggle(
+            general.addEntry(entry.startBooleanToggle(
                             Text.translatable("option.boundless_blocks.show_canbeinfinite_tooltips"),
-                            BoundlessConfig.showCanBeInfiniteTooltips
-                    )
+                            BoundlessConfig.showCanBeInfiniteTooltips)
                     .setDefaultValue(true)
-                    .setTooltip(Text.translatable("tooltip.boundless_blocks.show_canbeinfinite_tooltips"))
-                    .setSaveConsumer(newValue -> BoundlessConfig.showCanBeInfiniteTooltips = newValue)
+                    .setSaveConsumer(v -> BoundlessConfig.showCanBeInfiniteTooltips = v)
                     .build());
 
-
-            general.addEntry(entryBuilder.startBooleanToggle(
+            general.addEntry(entry.startBooleanToggle(
                             Text.translatable("option.boundless_blocks.allow_unpacking"),
-                            BoundlessConfig.allowUnpacking
-                    )
+                            BoundlessConfig.allowUnpacking)
                     .setDefaultValue(true)
-                    .setTooltip(Text.translatable("tooltip.boundless_blocks.allow_unpacking"))
-                    .setSaveConsumer(newValue -> BoundlessConfig.allowUnpacking = newValue)
+                    .setSaveConsumer(v -> BoundlessConfig.allowUnpacking = v)
                     .build());
 
-            general.addEntry(entryBuilder.startBooleanToggle(
+            general.addEntry(entry.startBooleanToggle(
                             Text.translatable("option.boundless_blocks.remove_picked"),
-                            BoundlessConfig.removePickedBlocks
-                    )
+                            BoundlessConfig.removePickedBlocks)
                     .setDefaultValue(true)
-                    .setTooltip(Text.translatable("tooltip.boundless_blocks.remove_picked"))
-                    .setSaveConsumer(newValue -> BoundlessConfig.removePickedBlocks = newValue)
+                    .setSaveConsumer(v -> BoundlessConfig.removePickedBlocks = v)
                     .build());
 
-            // 3. Keywords List
-            general.addEntry(entryBuilder.startStrList(
+            general.addEntry(entry.startStrList(
                             Text.translatable("option.boundless_blocks.keywords"),
-                            BoundlessConfig.allowedKeywords
-                    )
-                    .setDefaultValue(Arrays.asList(
-                            //Standard
-                            "planks", "log", "wood", "stripped", "stem", "hyphae", "bamboo",
-                            "willow", "cherry", "mahogany", "ebony", "redwood", "baobab",
-                            "stone", "cobblestone", "mossy", "smooth", "polished", "chiseled",
-                            "cut", "bricks", "tile", "terracotta", "concrete", "wool",
-                            "sandstone", "prismarine", "purpur", "quartz", "blackstone",
-                            "deepslate", "tuff", "calcite", "granite", "diorite", "andesite",
-                            "basalt", "scoria", "scoria_bricks", "limestone", "shale", "slate",
-                            "netherrack", "soul_sand", "mud", "clay", "sand", "gravel",
-                            "slab", "stairs", "fence", "wall", "glass",
-
-                            // Common Natural Blocks
-                            "dirt", "grass_block", "podzol", "mycelium", "coarse_dirt", "rooted_dirt",
-                            "snow", "ice", "packed_ice", "blue_ice", "powder_snow",
-                            "end_stone", "nylium", "warped_nylium", "crimson_nylium",
-                            "packed_mud", "mud_bricks",
-                            // Modded decor
-                            "casing", "andesite_alloy", "girder", "panel", "sheet_metal",
-                            "bracket", "window", "scaffolding", "frame", "pillar", "column",
-                            "plating", "shingle", "paving", "ornate", "layered", "embossed"
-                    ))
-                    .setTooltip(Text.translatable("tooltip.boundless_blocks.keywords"))
-                    .setSaveConsumer(newValue -> BoundlessConfig.allowedKeywords = newValue)
+                            BoundlessConfig.allowedKeywords)
+                    .setSaveConsumer(v -> BoundlessConfig.allowedKeywords = v)
                     .build());
 
-            // 4. Blacklisted Keywords List
-            general.addEntry(entryBuilder.startStrList(
+            general.addEntry(entry.startStrList(
                             Text.translatable("option.boundless_blocks.blacklist"),
-                            BoundlessConfig.blacklistedKeywords
-                    )
-                    .setDefaultValue(Arrays.asList(
-                            "diamond", "netherite", "gold", "iron", "emerald", "lapis",
-                            "redstone", "coal", "copper", "amethyst", "raw_", "debris",
-                            "obsidian", "crying_obsidian", "lodestone",
-                            "steel", "bronze", "tin", "lead", "silver", "nickel", "zinc",
-                            "platinum", "uranium", "osmium", "aluminum", "brass", "electrum",
-                            "invar", "constantan", "signalum", "lumium", "enderium",
-                            "chest", "shulker", "barrel", "hopper", "dispenser",
-                            "dropper", "furnace", "blast_furnace", "smoker", "anvil",
-                            "enchanting_table", "beacon", "conduit", "tank", "battery",
-                            "generator", "energy", "machine", "processor", "engine",
-                            "stone_cutter","end_portal", "kelp",
-                            "potted_", "wall_", "waystone", "sharestone"
-                    ))
-                    .setTooltip(Text.translatable("tooltip.boundless_blocks.blacklist"))
-                    .setSaveConsumer(newValue -> BoundlessConfig.blacklistedKeywords = newValue)
+                            BoundlessConfig.blacklistedKeywords)
+                    .setSaveConsumer(v -> BoundlessConfig.blacklistedKeywords = v)
                     .build());
 
             builder.setSavingRunnable(BoundlessConfig::save);
-
             return builder.build();
         };
     }
