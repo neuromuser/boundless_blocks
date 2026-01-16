@@ -138,7 +138,7 @@ public class InfiniteItem extends BlockItem {
             String path = "infinite_" + id.getNamespace() + "_" + id.getPath();
             path = path.replace(':', '_').replace('/', '_');
 
-            Identifier itemId = new Identifier(BoundlessBlocks.MOD_ID, path);
+            Identifier itemId = Identifier.of(BoundlessBlocks.MOD_ID, path);
 
             if (Registries.ITEM.containsId(itemId)) {
                 Item existing = Registries.ITEM.get(itemId);

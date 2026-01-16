@@ -10,6 +10,7 @@ import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
+import net.minecraft.recipe.input.CraftingRecipeInput;
 
 public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
 
@@ -18,12 +19,12 @@ public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(RecipeInputInventory inv, World world) {
+    public boolean matches(CraftingRecipeInput inv, World world) {
         if (!BoundlessConfig.allowUnpacking) return false;
 
         int items = 0;
-        for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getStack(i);
+        for (int i = 0; i < inv.getSize(); i++) {  // size() → getSize()
+            ItemStack stack = inv.getStackInSlot(i);  // getStack() → getStackInSlot()
             if (stack.isEmpty()) continue;
 
             items++;
@@ -42,9 +43,9 @@ public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory inv, RegistryWrapper.WrapperLookup lookup) {
-        for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getStack(i);
+    public ItemStack craft(CraftingRecipeInput inv, RegistryWrapper.WrapperLookup lookup) {
+        for (int i = 0; i < inv.getSize(); i++) {  // size() → getSize()
+            ItemStack stack = inv.getStackInSlot(i);  // getStack() → getStackInSlot()
             if (!stack.isEmpty()) {
                 net.minecraft.block.Block block = InfiniteBlockItem.getBlock(stack);
                 if (block != null) return new ItemStack(block.asItem(), 9);

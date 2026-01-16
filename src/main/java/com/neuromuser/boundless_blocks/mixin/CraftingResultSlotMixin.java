@@ -12,18 +12,21 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.recipe.input.CraftingRecipeInput;
+
 @Mixin(CraftingResultSlot.class)
 public class CraftingResultSlotMixin {
-    @Shadow @Final private RecipeInputInventory input;
-    @Shadow @Final private PlayerEntity player;
+    @Shadow @Final private CraftingRecipeInput input;
 
     @Inject(method = "onTakeItem", at = @At("HEAD"))
-    private void checkInfiniteCraft(PlayerEntity player, ItemStack stack, CallbackInfo ci) {
+    private void onTakeInfiniteItem(PlayerEntity player, ItemStack stack, CallbackInfo ci) {
         player.getWorld().getRecipeManager()
                 .getFirstMatch(net.minecraft.recipe.RecipeType.CRAFTING, input, player.getWorld())
-                .ifPresent(recipeEntry -> {
-                    if (recipeEntry.value() instanceof InfiniteCraftingRecipe) {
-                        input.clear();
+                .ifPresent(recipe -> {
+                    if (recipe.value() instanceof InfiniteCraftingRecipe) {
+                        for (int i = 0; i < input.getSize(); i++) {
+                            input.getStackInSlot(i).setCount(0);
+                        }
                     }
                 });
     }

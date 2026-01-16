@@ -8,6 +8,7 @@ import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ItemEnchantmentsComponent;
 import net.minecraft.component.type.LoreComponent;
 import net.minecraft.component.type.NbtComponent;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
@@ -47,9 +48,8 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
 
         ItemStack clientStack = new ItemStack(block.asItem());
 
-        RegistryEntry<net.minecraft.enchantment.Enchantment> unbreaking = Registries.ENCHANTMENT.getEntry(Enchantments.UNBREAKING);
         ItemEnchantmentsComponent.Builder enchantBuilder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
-        enchantBuilder.add(unbreaking.value(), 1);
+        enchantBuilder.add((RegistryEntry<Enchantment>) Enchantments.UNBREAKING, 1);
         clientStack.set(DataComponentTypes.ENCHANTMENTS, enchantBuilder.build());
         clientStack.set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP, net.minecraft.util.Unit.INSTANCE);
 

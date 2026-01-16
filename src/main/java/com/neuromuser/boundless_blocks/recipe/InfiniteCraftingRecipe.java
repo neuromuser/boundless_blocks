@@ -13,6 +13,7 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import net.minecraft.recipe.input.CraftingRecipeInput;
 
 public class InfiniteCraftingRecipe extends SpecialCraftingRecipe {
 
@@ -20,17 +21,17 @@ public class InfiniteCraftingRecipe extends SpecialCraftingRecipe {
         super(category);
     }
 
+
     @Override
-    public boolean matches(RecipeInputInventory inv, World world) {
+    public boolean matches(CraftingRecipeInput inv, World world) {
         ItemStack first = ItemStack.EMPTY;
         int validStacks = 0;
 
-        for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getStack(i);
+        for (int i = 0; i < inv.getSize(); i++) {  // size() → getSize()
+            ItemStack stack = inv.getStackInSlot(i);  // getStack() → getStackInSlot()
             if (stack.isEmpty()) continue;
 
             if (!(stack.getItem() instanceof BlockItem)) return false;
-
             if (stack.getCount() < 64) return false;
 
             Identifier blockId = Registries.BLOCK.getId(((BlockItem) stack.getItem()).getBlock());
@@ -49,9 +50,9 @@ public class InfiniteCraftingRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory inv, RegistryWrapper.WrapperLookup lookup) {
-        for (int i = 0; i < inv.size(); i++) {
-            ItemStack stack = inv.getStack(i);
+    public ItemStack craft(CraftingRecipeInput inv, RegistryWrapper.WrapperLookup lookup) {
+        for (int i = 0; i < inv.getSize(); i++) {  // size() → getSize()
+            ItemStack stack = inv.getStackInSlot(i);  // getStack() → getStackInSlot()
             if (!stack.isEmpty() && stack.getItem() instanceof BlockItem blockItem) {
                 return InfiniteBlockItem.create(blockItem.getBlock());
             }
