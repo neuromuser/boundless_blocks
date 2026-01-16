@@ -1,5 +1,7 @@
 # Boundless Blocks
 
+https://modrinth.com/mod/boundlessblocks
+
 Boundless Blocks allows players to craft infinite versions of building blocks that do not deplete when placed. This mod is designed for creative building and large-scale projects, removing the need for repetitive material gathering.
 
 ## Features
