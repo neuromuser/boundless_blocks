@@ -21,6 +21,7 @@ public class BoundlessConfig {
 
     public static int craftStacksCount = 9;
     public static int itemsPerStack = 64;
+    public static boolean showCanBeInfiniteTooltips = true;
     public static boolean allowUnpacking = true;
     public static boolean removePickedBlocks = true;
 
@@ -29,42 +30,42 @@ public class BoundlessConfig {
 
 
     private static final List<String> DEFAULT_KEYWORDS = Arrays.asList(
-            // --- Standard & Modded Wood ---
+            //Standard
             "planks", "log", "wood", "stripped", "stem", "hyphae", "bamboo",
             "willow", "cherry", "mahogany", "ebony", "redwood", "baobab",
-
-            // --- Standard & Modded Stone/Earth ---
             "stone", "cobblestone", "mossy", "smooth", "polished", "chiseled",
             "cut", "bricks", "tile", "terracotta", "concrete", "wool",
             "sandstone", "prismarine", "purpur", "quartz", "blackstone",
             "deepslate", "tuff", "calcite", "granite", "diorite", "andesite",
             "basalt", "scoria", "scoria_bricks", "limestone", "shale", "slate",
             "netherrack", "soul_sand", "mud", "clay", "sand", "gravel",
+            "slab", "stairs", "fence", "wall", "glass",
 
-            // --- Common Modded Decorative Terms ---
+            // Common Natural Blocks
+            "dirt", "grass_block", "podzol", "mycelium", "coarse_dirt", "rooted_dirt",
+            "snow", "ice", "packed_ice", "blue_ice", "powder_snow",
+            "end_stone", "nylium", "warped_nylium", "crimson_nylium",
+            "packed_mud", "mud_bricks",
+            // Modded decor
             "casing", "andesite_alloy", "girder", "panel", "sheet_metal",
             "bracket", "window", "scaffolding", "frame", "pillar", "column",
-            "plating", "shingle", "paving", "ornate", "layered", "embossed",
+            "plating", "shingle", "paving", "ornate", "layered", "embossed"
 
-            // --- Shapes & Structures ---
-            "block", "slab", "stairs", "fence", "wall", "glass", "door",
-            "trapdoor", "gate", "ladder", "vertical"
+
     );
 
     private static final List<String> DEFAULT_BLACKLIST = Arrays.asList(
-            // --- Precious Minerals & Resources (Vanilla + Modded) ---
             "diamond", "netherite", "gold", "iron", "emerald", "lapis",
             "redstone", "coal", "copper", "amethyst", "raw_", "debris",
             "obsidian", "crying_obsidian", "lodestone",
             "steel", "bronze", "tin", "lead", "silver", "nickel", "zinc",
             "platinum", "uranium", "osmium", "aluminum", "brass", "electrum",
             "invar", "constantan", "signalum", "lumium", "enderium",
-
             "chest", "shulker", "barrel", "hopper", "dispenser",
             "dropper", "furnace", "blast_furnace", "smoker", "anvil",
             "enchanting_table", "beacon", "conduit", "tank", "battery",
             "generator", "energy", "machine", "processor", "engine",
-            "stone_cutter","end_portal",
+            "stone_cutter","end_portal", "kelp",
             "potted_", "wall_", "waystone", "sharestone"
     );
 
@@ -72,6 +73,7 @@ public class BoundlessConfig {
     private int savedCraftStacksCount = 9;
     private int savedItemsPerStack = 64;
     private boolean savedAllowUnpacking = true;
+    private boolean savedShowCanBeInfiniteTooltips = true;
     private boolean savedRemovePickedBlocks = true;
     private List<String> savedAllowedKeywords = new ArrayList<>(DEFAULT_KEYWORDS);
     private List<String> savedBlacklistedKeywords = new ArrayList<>(DEFAULT_BLACKLIST);
@@ -94,6 +96,7 @@ public class BoundlessConfig {
                 craftStacksCount = data.savedCraftStacksCount;
                 itemsPerStack = data.savedItemsPerStack;
                 allowUnpacking = data.savedAllowUnpacking;
+                showCanBeInfiniteTooltips = data.savedShowCanBeInfiniteTooltips;
                 removePickedBlocks = data.savedRemovePickedBlocks;
                 // Ensure lists aren't null if JSON is corrupted
                 allowedKeywords = data.savedAllowedKeywords != null ? data.savedAllowedKeywords : new ArrayList<>(DEFAULT_KEYWORDS);
@@ -113,6 +116,7 @@ public class BoundlessConfig {
             BoundlessConfig dataToSave = new BoundlessConfig();
             dataToSave.savedCraftStacksCount = craftStacksCount;
             dataToSave.savedItemsPerStack = itemsPerStack;
+            dataToSave.savedShowCanBeInfiniteTooltips = showCanBeInfiniteTooltips;
             dataToSave.savedAllowUnpacking = allowUnpacking;
             dataToSave.savedRemovePickedBlocks = removePickedBlocks;
             dataToSave.savedAllowedKeywords = allowedKeywords;

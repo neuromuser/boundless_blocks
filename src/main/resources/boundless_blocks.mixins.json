@@ -4,8 +4,7 @@
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"CraftingResultSlotMixin",
-		"ItemEntityMixin",
-		"ServerPlayerEntityMixin"
+		"ItemEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

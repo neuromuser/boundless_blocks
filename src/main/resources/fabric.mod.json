@@ -26,9 +26,6 @@
 		],
 		"rei_client": [
 			"com.neuromuser.boundless_blocks.BoundlessReiPlugin"
-		],
-		"fabric-datagen": [
-			"com.neuromuser.boundless_blocks.BoundlessBlocksDataGenerator"
 		]
 	},
 	"mixins": [

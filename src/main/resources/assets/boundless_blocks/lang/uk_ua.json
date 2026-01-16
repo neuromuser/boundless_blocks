@@ -5,6 +5,7 @@
   "option.boundless_blocks.blacklist": "Заблоковані ключові слова",
   "option.boundless_blocks.keywords": "Дозволені ключові слова",
   "option.boundless_blocks.remove_picked": "Видаляти зібрані блоки",
+  "option.boundless_blocks.show_canbeinfinite_tooltips": "Показувати 'Можна зробити безкінечним' підказки",
   "option.boundless_blocks.stacks": "Кількість стаків для крафту",
   "title.boundless_blocks.config": "Налаштування Boundless Blocks",
   "tooltip.boundless_blocks.allow_unpacking": "Дозволити перетворення безкінечних блоків назад у звичайні",
@@ -13,6 +14,7 @@
   "tooltip.boundless_blocks.infinite_item.line1": "§bБезкінечний",
   "tooltip.boundless_blocks.keywords": "Блоки з цими словами можна крафтити",
   "tooltip.boundless_blocks.remove_picked": "Автоматично видаляти зібрані блоки, якщо є безкінечна версія",
+  "tooltip.boundless_blocks.show_canbeinfinite_tooltips": "Показувати 'Можна зробити безкінечним' підказки для дозволених типів блоків",
   "tooltip.boundless_blocks.stack_size": "Предметів у стаку (1-64)",
   "tooltip.boundless_blocks.stacks": "Скільки стаків потрібно для крафту (1-9)"
 }
