@@ -2,19 +2,18 @@ package com.neuromuser.boundless_blocks.recipe;
 
 import com.neuromuser.boundless_blocks.BoundlessBlocks;
 import com.neuromuser.boundless_blocks.item.InfiniteBlockItem;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.NbtComponent;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-/**
- * Recipe to unpack infinite blocks back into regular blocks
- * Infinite Block -> 9 Regular Blocks
- */
 public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
 
     public InfiniteUnpackingRecipe(CraftingRecipeCategory category) {
@@ -36,20 +35,15 @@ public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
                 totalItemCount++;
 
                 if (world.isClient()) {
-                    // On client, Polymer disguises our item as the base block item
-                    // We need to check if it has our custom name format "∞ ... ∞"
-                    // or if it has the enchantment glint
-                    if (stack.hasGlint() && stack.hasCustomName()) {
+                    if (stack.hasGlint() && stack.contains(DataComponentTypes.CUSTOM_NAME)) {
                         String name = stack.getName().getString();
                         if (name.startsWith("∞") && name.endsWith("∞")) {
                             infiniteItemCount++;
                             continue;
                         }
                     }
-                    // If not our format, it's not an infinite item
                     return false;
                 } else {
-                    // Server side - check actual item type
                     if (stack.getItem() instanceof InfiniteBlockItem && InfiniteBlockItem.isInfiniteBlock(stack)) {
                         infiniteItemCount++;
                     } else {
@@ -63,7 +57,7 @@ public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory inventory, DynamicRegistryManager registryManager) {
+    public ItemStack craft(RecipeInputInventory inventory, net.minecraft.registry.RegistryWrapper.WrapperLookup lookup) {
         for (int i = 0; i < inventory.size(); i++) {
             ItemStack stack = inventory.getStack(i);
 
@@ -72,19 +66,21 @@ public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
             if (stack.getItem() instanceof InfiniteBlockItem && InfiniteBlockItem.isInfiniteBlock(stack)) {
                 block = InfiniteBlockItem.getStoredBlock(stack);
             }
-            else if (stack.hasNbt()) {
-                net.minecraft.nbt.NbtCompound nbt = stack.getNbt();
-                if (nbt != null && nbt.contains("StoredBlockId")) {
-                    String blockIdStr = nbt.getString("StoredBlockId");
-                    net.minecraft.util.Identifier blockId = net.minecraft.util.Identifier.tryParse(blockIdStr);
-                    if (blockId != null) {
-                        block = net.minecraft.registry.Registries.BLOCK.get(blockId);
+            else {
+                NbtComponent component = stack.get(DataComponentTypes.CUSTOM_DATA);
+                if (component != null) {
+                    NbtCompound nbt = component.copyNbt();
+                    if (nbt.contains("StoredBlockId")) {
+                        String blockIdStr = nbt.getString("StoredBlockId");
+                        Identifier blockId = Identifier.tryParse(blockIdStr);
+                        if (blockId != null) {
+                            block = Registries.BLOCK.get(blockId);
+                        }
                     }
                 }
             }
 
             if (block != null) {
-                // Return 9 of the base block
                 return new ItemStack(block.asItem(), 9);
             }
         }

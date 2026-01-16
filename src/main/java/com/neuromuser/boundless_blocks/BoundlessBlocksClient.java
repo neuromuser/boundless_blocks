@@ -2,7 +2,7 @@ package com.neuromuser.boundless_blocks;
 
 import com.neuromuser.boundless_blocks.config.BoundlessConfig;
 import com.neuromuser.boundless_blocks.config.ClientConfigCache;
-import com.neuromuser.boundless_blocks.network.ConfigSyncPacket;
+import com.neuromuser.boundless_blocks.network.ConfigSyncPayload;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -12,35 +12,22 @@ import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BoundlessBlocksClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         BoundlessBlocks.LOGGER.info("Boundless Blocks client initializing...");
 
-        ClientPlayNetworking.registerGlobalReceiver(ConfigSyncPacket.SYNC_CONFIG_PACKET_ID, (client, handler, buf, responseSender) -> {
-            int allowedCount = buf.readInt();
-            List<String> allowedKeywords = new ArrayList<>();
-            for (int i = 0; i < allowedCount; i++) {
-                allowedKeywords.add(buf.readString());
-            }
-
-            int blacklistedCount = buf.readInt();
-            List<String> blacklistedKeywords = new ArrayList<>();
-            for (int i = 0; i < blacklistedCount; i++) {
-                blacklistedKeywords.add(buf.readString());
-            }
-
-            boolean showTooltips = buf.readBoolean();
-            boolean unpacking = buf.readBoolean();
-            boolean removePicked = buf.readBoolean();
-
-            client.execute(() -> {
-                ClientConfigCache.updateFromServer(allowedKeywords, blacklistedKeywords, showTooltips, unpacking, removePicked);
+        ClientPlayNetworking.registerGlobalReceiver(ConfigSyncPayload.ID, (payload, context) -> {
+            context.client().execute(() -> {
+                ClientConfigCache.updateFromServer(
+                        payload.allowedKeywords(),
+                        payload.blacklistedKeywords(),
+                        payload.showTooltips(),
+                        payload.unpacking(),
+                        payload.removePicked()
+                );
                 BoundlessBlocks.LOGGER.info("Received config from server: {} allowed, {} blacklisted",
-                        allowedKeywords.size(), blacklistedKeywords.size());
+                        payload.allowedKeywords().size(), payload.blacklistedKeywords().size());
             });
         });
 
@@ -49,13 +36,14 @@ public class BoundlessBlocksClient implements ClientModInitializer {
             BoundlessBlocks.LOGGER.info("Cleared server config cache");
         });
 
-        ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
+        ItemTooltipCallback.EVENT.register((stack, context, type, tooltip) -> {
             if (!BoundlessConfig.showCanBeInfiniteTooltips) {
                 return;
             }
 
             if (stack.getItem() instanceof BlockItem blockItem) {
-                if (!stack.hasCustomName() || !stack.getName().getString().contains("∞")) {
+                if (!stack.contains(net.minecraft.component.DataComponentTypes.CUSTOM_NAME) ||
+                        !stack.getName().getString().contains("∞")) {
                     if (isBlockSupported(blockItem)) {
                         tooltip.add(Text.translatable("tooltip.boundless_blocks.can_be_infinite"));
                     }

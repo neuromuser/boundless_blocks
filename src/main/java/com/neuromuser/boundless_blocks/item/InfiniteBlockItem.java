@@ -3,13 +3,16 @@ package com.neuromuser.boundless_blocks.item;
 import com.neuromuser.boundless_blocks.BoundlessBlocks;
 import eu.pb4.polymer.core.api.item.PolymerItem;
 import net.minecraft.block.Block;
-import net.minecraft.client.item.TooltipContext;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.component.type.LoreComponent;
+import net.minecraft.component.type.NbtComponent;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtString;
 import net.minecraft.registry.Registries;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -19,6 +22,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class InfiniteBlockItem extends Item implements PolymerItem {
     private static final String BLOCK_ID_KEY = "StoredBlockId";
@@ -33,41 +38,37 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
         return block != null ? block.asItem() : Items.BARRIER;
     }
 
-    @Override
-    public ItemStack getPolymerItemStack(ItemStack itemStack, TooltipContext context, @Nullable ServerPlayerEntity player) {
+    public ItemStack getPolymerItemStack(ItemStack itemStack, @Nullable ServerPlayerEntity player) {
         Block block = getStoredBlock(itemStack);
         if (block == null) {
-            return PolymerItem.super.getPolymerItemStack(itemStack, context, player);
+            return new ItemStack(Items.BARRIER);
         }
 
         ItemStack clientStack = new ItemStack(block.asItem());
-        clientStack.addEnchantment(net.minecraft.enchantment.Enchantments.UNBREAKING, 1);
-        clientStack.addHideFlag(ItemStack.TooltipSection.ENCHANTMENTS);
+
+        RegistryEntry<net.minecraft.enchantment.Enchantment> unbreaking =
+                Registries.ENCHANTMENT.getEntry(Enchantments.UNBREAKING);
+        ItemEnchantmentsComponent.Builder enchantBuilder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
+        enchantBuilder.add(unbreaking.value(), 1);
+        clientStack.set(DataComponentTypes.ENCHANTMENTS, enchantBuilder.build());
+        clientStack.set(DataComponentTypes.HIDE_ADDITIONAL_TOOLTIP, net.minecraft.util.Unit.INSTANCE);
 
         Text customName = Text.translatable(
                 "item.boundless_blocks.infinite_format",
                 block.getName()
         );
-        clientStack.setCustomName(customName);
-
-        NbtCompound display = clientStack.getOrCreateSubNbt("display");
-        NbtList lore = new NbtList();
-
-        lore.add(NbtString.of(
-                Text.Serialization.toJsonString(
-                        Text.translatable("tooltip.boundless_blocks.infinite_item.line1")
-                )
-        ));
+        clientStack.set(DataComponentTypes.CUSTOM_NAME, customName);
 
         Identifier id = Registries.BLOCK.getId(block);
-        lore.add(NbtString.of(
-                Text.Serialization.toJsonString(Text.literal("§7" + id))
+        LoreComponent lore = new LoreComponent(List.of(
+                Text.translatable("tooltip.boundless_blocks.infinite_item.line1"),
+                Text.literal("§7" + id)
         ));
+        clientStack.set(DataComponentTypes.LORE, lore);
 
-        display.put("Lore", lore);
-
-        NbtCompound serverData = clientStack.getOrCreateNbt();
+        NbtCompound serverData = new NbtCompound();
         serverData.putString(BLOCK_ID_KEY, id.toString());
+        clientStack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(serverData));
 
         return clientStack;
     }
@@ -125,9 +126,6 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
             return net.minecraft.util.TypedActionResult.fail(stack);
         }
 
-        if (!com.neuromuser.boundless_blocks.config.BoundlessConfig.allowUnpacking) {
-            return net.minecraft.util.TypedActionResult.fail(stack);
-        }
         if (player.isSneaking() && !world.isClient) {
             Block block = getStoredBlock(stack);
             if (block == null) {
@@ -198,13 +196,10 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
             return;
         }
 
-        NbtCompound nbt = stack.getOrCreateNbt();
         String id = Registries.BLOCK.getId(block).toString();
-
+        NbtCompound nbt = new NbtCompound();
         nbt.putString(BLOCK_ID_KEY, id);
-
-        NbtCompound publicData = stack.getOrCreateSubNbt("PublicBukkitValues");
-        publicData.putString("boundless_blocks:block_id", id);
+        stack.set(DataComponentTypes.CUSTOM_DATA, NbtComponent.of(nbt));
     }
 
     public static Block getStoredBlock(ItemStack stack) {
@@ -212,31 +207,13 @@ public class InfiniteBlockItem extends Item implements PolymerItem {
             return null;
         }
 
-        NbtCompound nbt = stack.getNbt();
-        if (nbt == null) {
+        NbtComponent component = stack.get(DataComponentTypes.CUSTOM_DATA);
+        if (component == null) {
             return null;
         }
 
-        String id = null;
-
-        if (nbt.contains(BLOCK_ID_KEY)) {
-            id = nbt.getString(BLOCK_ID_KEY);
-        } else if (nbt.contains("PublicBukkitValues")) {
-            NbtCompound publicData = nbt.getCompound("PublicBukkitValues");
-            if (publicData.contains("boundless_blocks:block_id")) {
-                id = publicData.getString("boundless_blocks:block_id");
-                nbt.putString(BLOCK_ID_KEY, id);
-            }
-        } else if (nbt.contains("display")) {
-            NbtCompound display = nbt.getCompound("display");
-            if (display.contains("StoredBlock")) {
-                id = display.getString("StoredBlock");
-                nbt.putString(BLOCK_ID_KEY, id);
-            }
-        } else if (nbt.contains("BlockReference")) {
-            id = nbt.getString("BlockReference");
-            nbt.putString(BLOCK_ID_KEY, id);
-        }
+        NbtCompound nbt = component.copyNbt();
+        String id = nbt.contains(BLOCK_ID_KEY) ? nbt.getString(BLOCK_ID_KEY) : null;
 
         if (id == null) {
             return null;

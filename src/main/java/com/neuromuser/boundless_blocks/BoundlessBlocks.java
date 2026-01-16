@@ -3,6 +3,7 @@ package com.neuromuser.boundless_blocks;
 import com.neuromuser.boundless_blocks.config.BoundlessConfig;
 import com.neuromuser.boundless_blocks.item.InfiniteBlockItem;
 import com.neuromuser.boundless_blocks.network.ConfigSyncPacket;
+import com.neuromuser.boundless_blocks.network.NetworkRegistration;
 import com.neuromuser.boundless_blocks.recipe.InfiniteCraftingRecipe;
 import com.neuromuser.boundless_blocks.recipe.InfiniteUnpackingRecipe;
 import net.fabricmc.api.ModInitializer;
@@ -35,6 +36,7 @@ public class BoundlessBlocks implements ModInitializer {
 		LOGGER.info("Initializing Boundless Blocks - NBT-Based Runtime System");
 
 		BoundlessConfig.load();
+		NetworkRegistration.registerPayloads();
 
 		Registry.register(Registries.ITEM,
 				new Identifier(MOD_ID, "infinite_block"),

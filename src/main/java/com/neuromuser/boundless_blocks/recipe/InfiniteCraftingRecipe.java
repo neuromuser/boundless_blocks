@@ -9,7 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
@@ -74,7 +73,7 @@ public class InfiniteCraftingRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory inventory, DynamicRegistryManager registryManager) {
+    public ItemStack craft(RecipeInputInventory inventory, net.minecraft.registry.RegistryWrapper.WrapperLookup lookup) {
         // Find the block being crafted
         for (int i = 0; i < inventory.size(); i++) {
             ItemStack stack = inventory.getStack(i);
