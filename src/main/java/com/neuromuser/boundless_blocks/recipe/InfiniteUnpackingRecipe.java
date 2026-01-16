@@ -1,17 +1,14 @@
 package com.neuromuser.boundless_blocks.recipe;
 
 import com.neuromuser.boundless_blocks.BoundlessBlocks;
+import com.neuromuser.boundless_blocks.config.BoundlessConfig;
 import com.neuromuser.boundless_blocks.item.InfiniteBlockItem;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.NbtComponent;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.recipe.book.CraftingRecipeCategory;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.world.World;
 
 public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
@@ -21,67 +18,36 @@ public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(RecipeInputInventory inventory, World world) {
-        if (!com.neuromuser.boundless_blocks.config.BoundlessConfig.allowUnpacking) {
-            return false;
-        }
+    public boolean matches(RecipeInputInventory inv, World world) {
+        if (!BoundlessConfig.allowUnpacking) return false;
 
-        int infiniteItemCount = 0;
-        int totalItemCount = 0;
+        int items = 0;
+        for (int i = 0; i < inv.size(); i++) {
+            ItemStack stack = inv.getStack(i);
+            if (stack.isEmpty()) continue;
 
-        for (int i = 0; i < inventory.size(); i++) {
-            ItemStack stack = inventory.getStack(i);
-            if (!stack.isEmpty()) {
-                totalItemCount++;
-
-                if (world.isClient()) {
-                    if (stack.hasGlint() && stack.contains(DataComponentTypes.CUSTOM_NAME)) {
-                        String name = stack.getName().getString();
-                        if (name.startsWith("∞") && name.endsWith("∞")) {
-                            infiniteItemCount++;
-                            continue;
-                        }
-                    }
-                    return false;
-                } else {
-                    if (stack.getItem() instanceof InfiniteBlockItem && InfiniteBlockItem.isInfiniteBlock(stack)) {
-                        infiniteItemCount++;
-                    } else {
-                        return false;
-                    }
-                }
+            items++;
+            if (world.isClient) {
+                if (!stack.hasGlint()) return false;
+                if (!stack.contains(net.minecraft.component.DataComponentTypes.CUSTOM_NAME)) return false;
+                String name = stack.getName().getString();
+                if (!name.startsWith("∞") || !name.endsWith("∞")) return false;
+            } else {
+                if (!(stack.getItem() instanceof InfiniteBlockItem)) return false;
+                if (InfiniteBlockItem.getBlock(stack) == null) return false;
             }
         }
 
-        return infiniteItemCount == 1 && totalItemCount == 1;
+        return items == 1;
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory inventory, net.minecraft.registry.RegistryWrapper.WrapperLookup lookup) {
-        for (int i = 0; i < inventory.size(); i++) {
-            ItemStack stack = inventory.getStack(i);
-
-            net.minecraft.block.Block block = null;
-
-            if (stack.getItem() instanceof InfiniteBlockItem && InfiniteBlockItem.isInfiniteBlock(stack)) {
-                block = InfiniteBlockItem.getStoredBlock(stack);
-            }
-            else {
-                NbtComponent component = stack.get(DataComponentTypes.CUSTOM_DATA);
-                if (component != null) {
-                    NbtCompound nbt = component.copyNbt();
-                    if (nbt.contains("StoredBlockId")) {
-                        String blockIdStr = nbt.getString("StoredBlockId");
-                        Identifier blockId = Identifier.tryParse(blockIdStr);
-                        if (blockId != null) {
-                            block = Registries.BLOCK.get(blockId);
-                        }
-                    }
-                }
-            }
-
-            if (block != null) {
-                return new ItemStack(block.asItem(), 9);
+    public ItemStack craft(RecipeInputInventory inv, RegistryWrapper.WrapperLookup lookup) {
+        for (int i = 0; i < inv.size(); i++) {
+            ItemStack stack = inv.getStack(i);
+            if (!stack.isEmpty()) {
+                net.minecraft.block.Block block = InfiniteBlockItem.getBlock(stack);
+                if (block != null) return new ItemStack(block.asItem(), 9);
             }
         }
         return ItemStack.EMPTY;

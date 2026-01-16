@@ -2,12 +2,13 @@ package com.neuromuser.boundless_blocks;
 
 import com.neuromuser.boundless_blocks.config.BoundlessConfig;
 import com.neuromuser.boundless_blocks.item.InfiniteBlockItem;
-import com.neuromuser.boundless_blocks.network.ConfigSyncPacket;
-import com.neuromuser.boundless_blocks.network.NetworkRegistration;
+import com.neuromuser.boundless_blocks.network.ConfigSyncPayload;
 import com.neuromuser.boundless_blocks.recipe.InfiniteCraftingRecipe;
 import com.neuromuser.boundless_blocks.recipe.InfiniteUnpackingRecipe;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.item.Item;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialRecipeSerializer;
@@ -21,47 +22,27 @@ public class BoundlessBlocks implements ModInitializer {
 	public static final String MOD_ID = "boundless_blocks";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
-	public static final InfiniteBlockItem INFINITE_BLOCK_ITEM =
-			new InfiniteBlockItem(new Item.Settings()
-					.maxCount(1));
-
-	public static final RecipeSerializer<InfiniteCraftingRecipe> INFINITE_CRAFTING_SERIALIZER =
-			new SpecialRecipeSerializer<>(InfiniteCraftingRecipe::new);
-
-	public static final RecipeSerializer<InfiniteUnpackingRecipe> INFINITE_UNPACKING_SERIALIZER =
-			new SpecialRecipeSerializer<>(InfiniteUnpackingRecipe::new);
+	public static final InfiniteBlockItem INFINITE_BLOCK_ITEM = new InfiniteBlockItem(new Item.Settings().maxCount(1));
+	public static final RecipeSerializer<InfiniteCraftingRecipe> INFINITE_CRAFTING_SERIALIZER = new SpecialRecipeSerializer<>(InfiniteCraftingRecipe::new);
+	public static final RecipeSerializer<InfiniteUnpackingRecipe> INFINITE_UNPACKING_SERIALIZER = new SpecialRecipeSerializer<>(InfiniteUnpackingRecipe::new);
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Initializing Boundless Blocks - NBT-Based Runtime System");
-
 		BoundlessConfig.load();
-		NetworkRegistration.registerPayloads();
 
-		Registry.register(Registries.ITEM,
-				new Identifier(MOD_ID, "infinite_block"),
-				INFINITE_BLOCK_ITEM);
+		Registry.register(Registries.ITEM, Identifier.of(MOD_ID, "infinite_block"), INFINITE_BLOCK_ITEM);
+		Registry.register(Registries.RECIPE_SERIALIZER, Identifier.of(MOD_ID, "infinite_crafting"), INFINITE_CRAFTING_SERIALIZER);
+		Registry.register(Registries.RECIPE_SERIALIZER, Identifier.of(MOD_ID, "infinite_unpacking"), INFINITE_UNPACKING_SERIALIZER);
 
-		Registry.register(Registries.RECIPE_SERIALIZER,
-				new Identifier(MOD_ID, "infinite_crafting"),
-				INFINITE_CRAFTING_SERIALIZER);
-
-		Registry.register(Registries.RECIPE_SERIALIZER,
-				new Identifier(MOD_ID, "infinite_unpacking"),
-				INFINITE_UNPACKING_SERIALIZER);
+		PayloadTypeRegistry.playS2C().register(ConfigSyncPayload.ID, ConfigSyncPayload.CODEC);
 
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-			ConfigSyncPacket.sendToClient(
-					handler.getPlayer(),
+			ServerPlayNetworking.send(handler.player, new ConfigSyncPayload(
 					BoundlessConfig.allowedKeywords,
-					BoundlessConfig.blacklistedKeywords,
-					BoundlessConfig.showCanBeInfiniteTooltips,
-					BoundlessConfig.allowUnpacking,
-					BoundlessConfig.removePickedBlocks
-			);
+					BoundlessConfig.blacklistedKeywords
+			));
 		});
 
-		LOGGER.info("Boundless Blocks initialized - recipes will work with any block!");
-		LOGGER.info("Configured keywords: {}", String.join(", ", BoundlessConfig.allowedKeywords));
+		LOGGER.info("Boundless Blocks initialized");
 	}
 }
