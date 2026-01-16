@@ -1,6 +1,7 @@
 package com.neuromuser.boundless_blocks.recipe;
 
 import com.neuromuser.boundless_blocks.BoundlessBlocks;
+import com.neuromuser.boundless_blocks.config.BoundlessConfig;
 import com.neuromuser.boundless_blocks.item.InfiniteBlockItem;
 import net.minecraft.inventory.RecipeInputInventory;
 import net.minecraft.item.ItemStack;
@@ -11,10 +12,6 @@ import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-/**
- * Recipe to unpack infinite blocks back into regular blocks
- * Infinite Block -> 9 Regular Blocks
- */
 public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
 
     public InfiniteUnpackingRecipe(CraftingRecipeCategory category) {
@@ -22,70 +19,35 @@ public class InfiniteUnpackingRecipe extends SpecialCraftingRecipe {
     }
 
     @Override
-    public boolean matches(RecipeInputInventory inventory, World world) {
-        if (!com.neuromuser.boundless_blocks.config.BoundlessConfig.allowUnpacking) {
-            return false;
-        }
+    public boolean matches(RecipeInputInventory inv, World world) {
+        if (!BoundlessConfig.allowUnpacking) return false;
 
-        int infiniteItemCount = 0;
-        int totalItemCount = 0;
+        int items = 0;
+        for (int i = 0; i < inv.size(); i++) {
+            ItemStack stack = inv.getStack(i);
+            if (stack.isEmpty()) continue;
 
-        for (int i = 0; i < inventory.size(); i++) {
-            ItemStack stack = inventory.getStack(i);
-            if (!stack.isEmpty()) {
-                totalItemCount++;
-
-                if (world.isClient()) {
-                    // On client, Polymer disguises our item as the base block item
-                    // We need to check if it has our custom name format "∞ ... ∞"
-                    // or if it has the enchantment glint
-                    if (stack.hasGlint() && stack.hasCustomName()) {
-                        String name = stack.getName().getString();
-                        if (name.startsWith("∞") && name.endsWith("∞")) {
-                            infiniteItemCount++;
-                            continue;
-                        }
-                    }
-                    // If not our format, it's not an infinite item
-                    return false;
-                } else {
-                    // Server side - check actual item type
-                    if (stack.getItem() instanceof InfiniteBlockItem && InfiniteBlockItem.isInfiniteBlock(stack)) {
-                        infiniteItemCount++;
-                    } else {
-                        return false;
-                    }
-                }
+            items++;
+            if (world.isClient) {
+                if (!stack.hasGlint() || !stack.hasCustomName()) return false;
+                String name = stack.getName().getString();
+                if (!name.startsWith("∞") || !name.endsWith("∞")) return false;
+            } else {
+                if (!(stack.getItem() instanceof InfiniteBlockItem)) return false;
+                if (InfiniteBlockItem.getBlock(stack) == null) return false;
             }
         }
 
-        return infiniteItemCount == 1 && totalItemCount == 1;
+        return items == 1;
     }
 
     @Override
-    public ItemStack craft(RecipeInputInventory inventory, DynamicRegistryManager registryManager) {
-        for (int i = 0; i < inventory.size(); i++) {
-            ItemStack stack = inventory.getStack(i);
-
-            net.minecraft.block.Block block = null;
-
-            if (stack.getItem() instanceof InfiniteBlockItem && InfiniteBlockItem.isInfiniteBlock(stack)) {
-                block = InfiniteBlockItem.getStoredBlock(stack);
-            }
-            else if (stack.hasNbt()) {
-                net.minecraft.nbt.NbtCompound nbt = stack.getNbt();
-                if (nbt != null && nbt.contains("StoredBlockId")) {
-                    String blockIdStr = nbt.getString("StoredBlockId");
-                    net.minecraft.util.Identifier blockId = net.minecraft.util.Identifier.tryParse(blockIdStr);
-                    if (blockId != null) {
-                        block = net.minecraft.registry.Registries.BLOCK.get(blockId);
-                    }
-                }
-            }
-
-            if (block != null) {
-                // Return 9 of the base block
-                return new ItemStack(block.asItem(), 9);
+    public ItemStack craft(RecipeInputInventory inv, DynamicRegistryManager registryManager) {
+        for (int i = 0; i < inv.size(); i++) {
+            ItemStack stack = inv.getStack(i);
+            if (!stack.isEmpty()) {
+                net.minecraft.block.Block block = InfiniteBlockItem.getBlock(stack);
+                if (block != null) return new ItemStack(block.asItem(), 9);
             }
         }
         return ItemStack.EMPTY;
