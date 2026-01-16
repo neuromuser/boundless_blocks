@@ -24,6 +24,7 @@ public class ModLangGenerator extends FabricLanguageProvider {
         translationBuilder.add("category.boundless_blocks.general", "General Settings");
         translationBuilder.add("option.boundless_blocks.stacks", "Craft Stacks Count");
         translationBuilder.add("option.boundless_blocks.stack_size", "Items Per Stack");
+        translationBuilder.add("option.boundless_blocks.show_canbeinfinite_tooltips", "Show 'Can be infinite' tooltips");
         translationBuilder.add("option.boundless_blocks.allow_unpacking", "Allow Unpacking");
         translationBuilder.add("option.boundless_blocks.remove_picked", "Remove Picked Blocks");
         translationBuilder.add("option.boundless_blocks.keywords", "Allowed Keywords");
@@ -32,6 +33,7 @@ public class ModLangGenerator extends FabricLanguageProvider {
         // Tooltips for config options
         translationBuilder.add("tooltip.boundless_blocks.stacks", "How many stacks needed to craft (1-9)");
         translationBuilder.add("tooltip.boundless_blocks.stack_size", "Items per stack required (1-64)");
+        translationBuilder.add("tooltip.boundless_blocks.show_canbeinfinite_tooltips", "Show 'Can be crafted into an infinite block' tooltips for allowed block types");
         translationBuilder.add("tooltip.boundless_blocks.allow_unpacking", "Allow converting infinite blocks back to regular blocks");
         translationBuilder.add("tooltip.boundless_blocks.remove_picked", "Auto-remove picked blocks if you have infinite version");
         translationBuilder.add("tooltip.boundless_blocks.keywords", "Blocks containing these words can be crafted");
@@ -58,6 +60,7 @@ public class ModLangGenerator extends FabricLanguageProvider {
             translationBuilder.add("title.boundless_blocks.config", "Налаштування Boundless Blocks");
             translationBuilder.add("category.boundless_blocks.general", "Загальні налаштування");
             translationBuilder.add("option.boundless_blocks.stacks", "Кількість стаків для крафту");
+            translationBuilder.add("option.boundless_blocks.show_canbeinfinite_tooltips", "Показувати 'Можна зробити безкінечним' підказки");
             translationBuilder.add("option.boundless_blocks.allow_unpacking", "Дозволити розпакування");
             translationBuilder.add("option.boundless_blocks.remove_picked", "Видаляти зібрані блоки");
             translationBuilder.add("option.boundless_blocks.keywords", "Дозволені ключові слова");
@@ -66,6 +69,7 @@ public class ModLangGenerator extends FabricLanguageProvider {
             // Tooltips for config options
             translationBuilder.add("tooltip.boundless_blocks.stacks", "Скільки стаків потрібно для крафту (1-9)");
             translationBuilder.add("tooltip.boundless_blocks.stack_size", "Предметів у стаку (1-64)");
+            translationBuilder.add("tooltip.boundless_blocks.show_canbeinfinite_tooltips", "Показувати 'Можна зробити безкінечним' підказки для дозволених типів блоків");
             translationBuilder.add("tooltip.boundless_blocks.allow_unpacking", "Дозволити перетворення безкінечних блоків назад у звичайні");
             translationBuilder.add("tooltip.boundless_blocks.remove_picked", "Автоматично видаляти зібрані блоки, якщо є безкінечна версія");
             translationBuilder.add("tooltip.boundless_blocks.keywords", "Блоки з цими словами можна крафтити");

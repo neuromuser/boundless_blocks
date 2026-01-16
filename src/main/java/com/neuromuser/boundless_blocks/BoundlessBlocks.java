@@ -52,10 +52,12 @@ public class BoundlessBlocks implements ModInitializer {
 			ConfigSyncPacket.sendToClient(
 					handler.getPlayer(),
 					BoundlessConfig.allowedKeywords,
-					BoundlessConfig.blacklistedKeywords
+					BoundlessConfig.blacklistedKeywords,
+					BoundlessConfig.showCanBeInfiniteTooltips,
+					BoundlessConfig.allowUnpacking,
+					BoundlessConfig.removePickedBlocks
 			);
 		});
-
 
 		LOGGER.info("Boundless Blocks initialized - recipes will work with any block!");
 		LOGGER.info("Configured keywords: {}", String.join(", ", BoundlessConfig.allowedKeywords));

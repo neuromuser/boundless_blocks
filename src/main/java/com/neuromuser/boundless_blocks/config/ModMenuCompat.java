@@ -35,6 +35,16 @@ public class ModMenuCompat implements ModMenuApi {
                     .build());
 
             general.addEntry(entryBuilder.startBooleanToggle(
+                            Text.translatable("option.boundless_blocks.show_canbeinfinite_tooltips"),
+                            BoundlessConfig.showCanBeInfiniteTooltips
+                    )
+                    .setDefaultValue(true)
+                    .setTooltip(Text.translatable("tooltip.boundless_blocks.show_canbeinfinite_tooltips"))
+                    .setSaveConsumer(newValue -> BoundlessConfig.showCanBeInfiniteTooltips = newValue)
+                    .build());
+
+
+            general.addEntry(entryBuilder.startBooleanToggle(
                             Text.translatable("option.boundless_blocks.allow_unpacking"),
                             BoundlessConfig.allowUnpacking
                     )

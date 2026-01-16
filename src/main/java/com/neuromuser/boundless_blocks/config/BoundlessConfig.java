@@ -21,6 +21,7 @@ public class BoundlessConfig {
 
     public static int craftStacksCount = 9;
     public static int itemsPerStack = 64;
+    public static boolean showCanBeInfiniteTooltips = true;
     public static boolean allowUnpacking = true;
     public static boolean removePickedBlocks = true;
 
@@ -72,6 +73,7 @@ public class BoundlessConfig {
     private int savedCraftStacksCount = 9;
     private int savedItemsPerStack = 64;
     private boolean savedAllowUnpacking = true;
+    private boolean savedShowCanBeInfiniteTooltips = true;
     private boolean savedRemovePickedBlocks = true;
     private List<String> savedAllowedKeywords = new ArrayList<>(DEFAULT_KEYWORDS);
     private List<String> savedBlacklistedKeywords = new ArrayList<>(DEFAULT_BLACKLIST);
@@ -94,6 +96,7 @@ public class BoundlessConfig {
                 craftStacksCount = data.savedCraftStacksCount;
                 itemsPerStack = data.savedItemsPerStack;
                 allowUnpacking = data.savedAllowUnpacking;
+                showCanBeInfiniteTooltips = data.savedShowCanBeInfiniteTooltips;
                 removePickedBlocks = data.savedRemovePickedBlocks;
                 // Ensure lists aren't null if JSON is corrupted
                 allowedKeywords = data.savedAllowedKeywords != null ? data.savedAllowedKeywords : new ArrayList<>(DEFAULT_KEYWORDS);
@@ -113,6 +116,7 @@ public class BoundlessConfig {
             BoundlessConfig dataToSave = new BoundlessConfig();
             dataToSave.savedCraftStacksCount = craftStacksCount;
             dataToSave.savedItemsPerStack = itemsPerStack;
+            dataToSave.savedShowCanBeInfiniteTooltips = showCanBeInfiniteTooltips;
             dataToSave.savedAllowUnpacking = allowUnpacking;
             dataToSave.savedRemovePickedBlocks = removePickedBlocks;
             dataToSave.savedAllowedKeywords = allowedKeywords;

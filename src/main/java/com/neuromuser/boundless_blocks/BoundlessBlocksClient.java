@@ -1,5 +1,6 @@
 package com.neuromuser.boundless_blocks;
 
+import com.neuromuser.boundless_blocks.config.BoundlessConfig;
 import com.neuromuser.boundless_blocks.config.ClientConfigCache;
 import com.neuromuser.boundless_blocks.network.ConfigSyncPacket;
 import net.fabricmc.api.ClientModInitializer;
@@ -32,8 +33,12 @@ public class BoundlessBlocksClient implements ClientModInitializer {
                 blacklistedKeywords.add(buf.readString());
             }
 
+            boolean showTooltips = buf.readBoolean();
+            boolean unpacking = buf.readBoolean();
+            boolean removePicked = buf.readBoolean();
+
             client.execute(() -> {
-                ClientConfigCache.updateFromServer(allowedKeywords, blacklistedKeywords);
+                ClientConfigCache.updateFromServer(allowedKeywords, blacklistedKeywords, showTooltips, unpacking, removePicked);
                 BoundlessBlocks.LOGGER.info("Received config from server: {} allowed, {} blacklisted",
                         allowedKeywords.size(), blacklistedKeywords.size());
             });
@@ -45,6 +50,10 @@ public class BoundlessBlocksClient implements ClientModInitializer {
         });
 
         ItemTooltipCallback.EVENT.register((stack, context, tooltip) -> {
+            if (!BoundlessConfig.showCanBeInfiniteTooltips) {
+                return;
+            }
+
             if (stack.getItem() instanceof BlockItem blockItem) {
                 if (!stack.hasCustomName() || !stack.getName().getString().contains("∞")) {
                     if (isBlockSupported(blockItem)) {
